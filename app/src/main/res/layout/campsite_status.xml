@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/post_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="10dp"
+                android:id="@+id/image_profile"
+                android:src="@drawable/default_user"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/username"
+                android:layout_gravity="center_vertical"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Username"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:id="@+id/post_image"
+                android:src="@drawable/default_photo"/>
+
+            <TextView
+                android:gravity="center"
+                android:layout_marginTop="12dp"
+                android:id="@+id/campsite_kids"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:text="MEL"
+                android:textSize="16dp"
+                android:fontFamily="@font/deathstar"
+                android:textColor="@android:color/white"
+                android:background="@drawable/campsite_label"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/like"
+                android:src="@drawable/ic_favorite_border_black_24dp"/>
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textStyle="bold"
+                android:id="@+id/likes"
+                android:text="100 likes"
+                android:layout_toEndOf="@+id/like"
+                android:textColor="@color/black"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toEndOf="@+id/likes"
+                android:layout_marginStart="10dp"
+                android:id="@+id/comment"
+                android:src="@drawable/ic_comment_black_24dp"/>
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:id="@+id/save"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_save_in_not_black_24dp"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textStyle="bold"
+            android:text="Camping Now"
+            android:textSize="20dp"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Camping Now"
+            android:textColor="@android:color/black"
+            android:textSize="18dp"/>
+
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:id="@+id/comments"
+            android:text="100 comments"
+            android:layout_toEndOf="@+id/comment"
+            />
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="25/02/2021 10:00"
+            android:textSize="10dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="#c3c3c3"
+        android:layout_below="@id/post_main"/>
+
+</RelativeLayout>

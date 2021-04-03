@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_margin="1dp"
+        android:id="@+id/post_image"/>
+
+    <TextView
+        android:gravity="center"
+        android:layout_marginTop="12dp"
+        android:id="@+id/campsite_kids"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:layout_alignParentRight="true"
+        android:text="MEL"
+        android:textSize="16dp"
+        android:fontFamily="@font/deathstar"
+        android:textColor="@android:color/white"
+        android:background="@drawable/campsite_label"/>
+
+</RelativeLayout>

@@ -1,0 +1,2 @@
+rootProject.name='CampingAu'
+include ':app'

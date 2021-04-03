@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="10dp"
+    android:background="@drawable/camping_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Ui.RegisterActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="40sp"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/deathstar"/>
+
+    <EditText
+        android:id="@+id/register_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_background"
+        android:hint="@string/register_username"
+        android:layout_marginTop="15dp"
+        android:padding="10dp"/>
+    <EditText
+        android:id="@+id/register_user_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext_background"
+        android:hint="@string/register_user_email"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="15dp"
+        android:padding="10dp"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/etPasswordLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:padding="10dp"
+            android:id="@+id/register_user_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/register_user_password"
+            android:background="@drawable/edittext_background"
+            android:inputType="textPassword"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+<!--    <EditText-->
+<!--        android:id="@+id/register_user_password"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="10dp"-->
+<!--        android:background="@drawable/edittext_background"-->
+<!--        android:layout_marginTop="15dp"-->
+<!--        android:hint="@string/register_user_password"-->
+<!--        android:inputType="textPassword"/>-->
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/register"
+        android:textColor="@android:color/white"
+        android:background="@drawable/button_background"
+        android:layout_marginTop="15dp" />
+
+    <TextView
+        android:id="@+id/login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register_already_account"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp"
+        android:textStyle="italic"/>
+
+
+
+</LinearLayout>

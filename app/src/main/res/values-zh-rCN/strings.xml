@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">来去露营吧</string>
+    <string name="facebook_app_id">179352260623510</string>
+    <string name="fb_login_protocol_scheme">fb179352260623510</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- Register-->
+    <string name="login">登入</string>
+    <string name="signup">注册</string>
+    <string name="register">注册</string>
+    <string name="sendEmail">发送 Email</string>
+    <string name="please_wait">请等待...</string>
+    <string name="posting">发表中...</string>
+    <string name="forget_password">忘记密码?</string>
+    <string name="register_username">使用者帐号</string>
+    <string name="register_user_email">Email</string>
+    <string name="register_user_password">密码</string>
+    <string name="register_already_account">已经有帐号了? 登入</string>
+    <string name="no_account">还没拥有帐号? 注册</string>
+    <string name="all_fields_are_required">所有栏位必须填写</string>
+    <string name="password_must_have_8_characters">密码必须超过8位数</string>
+    <string name="you_can_not_register_with_this_email_or_password">帐号密码错误</string>
+    <string name="authentication_failed">授权失败</string>
+    <!-- Reset Password -->
+    <string name="please_enter_your_email_address">请输入您的 Email</string>
+    <string name="please_visit_your_email_to_reset_your_password">请查看信件并且重置密码</string>
+    <string name="reset_password_error">Error</string>
+    <!-- Explore -->
+    <string name="search_campsite">搜寻露营地...</string>
+    <string name="campsite_name">露营地名称</string>
+    <string name="campsite_phone">露营地电话</string>
+    <string name="campsite_address">露营地地址</string>
+    <!-- Post -->
+    <string name="please_enter_the_title">请输入标题</string>
+    <string name="please_enter_the_description">请输入描述并且上传一张照片</string>
+    <string name="something_gone_wrong">某些地方出现了错误!!!</string>
+    <string name="failed">失败</string>
+    <string name="no_image_selected">没有选择照片!!!</string>
+    <string name="must_upload_one_photo">必须上传一张照片</string>
+    <string name="alert_error">提示</string>
+    <string name="location">位置 :</string>
+    <!-- Spinner -->
+    <string-array name="spinner_sub">
+        <item>请选择哪一州</item>
+        <item>维州</item>
+        <item>新州</item>
+        <item>昆州</item>
+        <item>坎培拉</item>
+        <item>塔州</item>
+        <item>北领地</item>
+        <item>南澳</item>
+        <item>西澳</item>
+    </string-array>
+    <!-- Comment -->
+    <string name="add_comments">新增评论...</string>
+    <string name="empty_comments">不能发表空白评论</string>
+    <string name="view_all">查看全部 </string>
+    <string name="comments"> 评论</string>
+    <string name="like">个喜欢</string>
+    <string name="liked">喜欢</string>
+    <!-- Profile -->
+    <string name="posts">文章数</string>
+    <string name="follows">追踪者</string>
+    <string name="following">追踪</string>
+    <string name="edit_profile">编辑档案</string>
+    <!-- CameSite Explore -->
+    <string name="campSite_name">露营地名称</string>
+    <string name="campSite_sub">Tas</string>
+    <string name="campSite_address">露营地地址</string>
+    <string name="campsite_follow">追随</string>
+    <!-- CampSitePost -->
+    <string name="campsite_post">发表</string>
+    <string name="campsite_description">描述</string>
+    <string name="campsite_post_address">露营地地址</string>
+    <string name="campsite_kitchen">厨房</string>
+    <string name="campsite_bbq">烤肉区</string>
+    <string name="campsite_suit_any_car">适合所有车辆</string>
+    <string name="campsite_laundromat">自助洗衣机</string>
+    <string name="campsite_dump_station">垃圾站</string>
+    <string name="campsite_large_vehicle_access">大型车辆通道</string>
+    <string name="campsite_caravan_power">露营车车充</string>
+    <string name="campsite_hot_shower">热水澡</string>
+    <string name="campsite_water_from_tap">自来水</string>
+    <string name="campsite_cellular_signal">手机讯号</string>
+    <string name="campsite_cabin">小木屋</string>
+    <string name="campsite_wifi">Wifi</string>
+    <string name="campsite_wheelchair">无障碍通道</string>
+    <string name="campsite_pet_welcome">接受宠物</string>
+    <string name="campsite_household_power">家用电源</string>
+    <string name="campsite_surface">草坪</string>
+    <string name="campsite_credit_card">接受信用卡</string>
+    <string name="campsite_bed_supplied">提供床上用品</string>
+    <string name="campsite_toilet">厕所</string>
+    <string name="campsite_internet">网路</string>
+    <string name="campsite_swimming_pool">游泳池</string>
+    <string name="campsite_info">露营资讯</string>
+    <string name="campsite_summary">概括</string>
+    <string name="campsite_description1">说一点描述吧</string>
+    <!-- Sub Array -->
+    <string name="choose_sub">请选择哪一州</string>
+    <string name="vic">VIC</string>
+    <string name="nsw">NSW</string>
+    <string name="qld">QLD</string>
+    <string name="act">ACT</string>
+    <string name="tas">TAS</string>
+    <string name="nt">NT</string>
+    <string name="sa">SA</string>
+    <string name="wa">WA</string>
+</resources>

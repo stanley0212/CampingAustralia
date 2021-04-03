@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "513753601636",
+    "project_id": "campingau-6b84d",
+    "storage_bucket": "campingau-6b84d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:513753601636:android:903ac57c0da8d7e9283171",
+        "android_client_info": {
+          "package_name": "com.luvtas.campingau"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "513753601636-fioh49ipvjbleolukr0nltt9n88ee6f2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.luvtas.campingau",
+            "certificate_hash": "cb252f51efdb36553734d2cab9361ea7c4c7ddf0"
+          }
+        },
+        {
+          "client_id": "513753601636-pnq9oaf51dh84geomrj5c9vf2o4ql6ns.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOUR8edzuycQD8HIARg9OJD3LUe_SFO3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "513753601636-pnq9oaf51dh84geomrj5c9vf2o4ql6ns.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
