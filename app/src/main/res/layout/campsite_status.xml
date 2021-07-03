@@ -40,7 +40,7 @@
             <ImageView
                 android:scaleType="centerCrop"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="350dp"
                 android:id="@+id/post_image"
                 android:src="@drawable/default_photo"/>
 
@@ -70,21 +70,22 @@
                 android:id="@+id/like"
                 android:src="@drawable/ic_favorite_border_black_24dp"/>
 
-            <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textStyle="bold"
-                android:id="@+id/likes"
-                android:text="100 likes"
-                android:layout_toEndOf="@+id/like"
-                android:textColor="@color/black"/>
+<!--            <TextView-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:textStyle="bold"-->
+<!--                android:id="@+id/likes"-->
+<!--                android:text="100 likes"-->
+<!--                android:layout_toEndOf="@+id/like"-->
+<!--                android:textColor="@color/black"/>-->
+
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_toEndOf="@+id/likes"
+                android:layout_toEndOf="@+id/like"
                 android:layout_marginStart="10dp"
                 android:id="@+id/comment"
                 android:src="@drawable/ic_comment_black_24dp"/>
@@ -97,6 +98,16 @@
                 android:src="@drawable/ic_save_in_not_black_24dp"/>
 
         </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textStyle="bold"
+            android:id="@+id/likes"
+            android:text="100 likes"
+            android:layout_toEndOf="@+id/like"
+            android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/title"

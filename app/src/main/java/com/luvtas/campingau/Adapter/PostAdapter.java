@@ -1,5 +1,6 @@
 package com.luvtas.campingau.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +29,7 @@ import com.luvtas.campingau.Model.PostModel;
 import com.luvtas.campingau.Model.UserModel;
 import com.luvtas.campingau.R;
 import com.luvtas.campingau.Ui.CommentsActivity;
+import com.luvtas.campingau.Ui.OpenImageActivity;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,6 +43,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public Context mContext;
     public List<PostModel> mPost;
+    ImageView OpenImage;
 
     private FirebaseUser firebaseUser;
 
@@ -110,15 +114,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 //            }
 //        });
 
-//        holder.post_image.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
+        holder.post_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 //                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
 //                editor.putString("postid", postModel.getPostid());
 //                editor.apply();
 //                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PostDetailFragment()).commit();
-//            }
-//        });
+                OpenImage = (ImageView) view.findViewById(R.id.post_pic);
+                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) view.getContext(), view, "sharedView");
+                Intent intent = new Intent(mContext, OpenImageActivity.class);
+                intent.putExtra("shareimage", postModel.getPostimage());
+                mContext.startActivity(intent, activityOptionsCompat.toBundle());
+            }
+        });
 
         holder.save.setOnClickListener(new View.OnClickListener() {
             @Override

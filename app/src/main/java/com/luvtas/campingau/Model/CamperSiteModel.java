@@ -7,7 +7,7 @@ public class CamperSiteModel {
     String CamperSiteType;
     String CamperSiteDistance;
     String CamperSiteInfo;
-    String CamperSiteSummary;
+    Long CamperSiteSummary;
     String CamperSiteAddress;
     String CamperSiteLatitude;
     String CamperSiteLongitude;
@@ -20,7 +20,7 @@ public class CamperSiteModel {
     public CamperSiteModel() {
     }
 
-    public CamperSiteModel(String camperSiteID, String camperSiteName, String camperSiteImage, String camperSiteType, String camperSiteDistance, String camperSiteInfo, String camperSiteSummary, String camperSiteAddress, String camperSiteLatitude, String camperSiteLongitude, String camperSitePrice1, String camperSitePrice2, String camperSiteEmail, String camperSiteSub, String camperSiteDescription) {
+    public CamperSiteModel(String camperSiteID, String camperSiteName, String camperSiteImage, String camperSiteType, String camperSiteDistance, String camperSiteInfo, Long camperSiteSummary, String camperSiteAddress, String camperSiteLatitude, String camperSiteLongitude, String camperSitePrice1, String camperSitePrice2, String camperSiteEmail, String camperSiteSub, String camperSiteDescription) {
         CamperSiteID = camperSiteID;
         CamperSiteName = camperSiteName;
         CamperSiteImage = camperSiteImage;
@@ -86,11 +86,11 @@ public class CamperSiteModel {
         CamperSiteInfo = camperSiteInfo;
     }
 
-    public String getCamperSiteSummary() {
+    public Long getCamperSiteSummary() {
         return CamperSiteSummary;
     }
 
-    public void setCamperSiteSummary(String camperSiteSummary) {
+    public void setCamperSiteSummary(Long camperSiteSummary) {
         CamperSiteSummary = camperSiteSummary;
     }
 

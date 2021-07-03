@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +53,8 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button btn_login, btn_register, facebook_login, google_login;
+    Button btn_login, btn_register;
+    ImageView facebook_login,google_login;
     TextView txt_forgetpassword;
     LoginButton loginButton;
 
@@ -95,6 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         btn_register = findViewById(R.id.btn_register);
         txt_forgetpassword = findViewById(R.id.txt_forget_password);
         facebook_login = findViewById(R.id.facebook_login);
+        google_login = findViewById(R.id.google_login);
 
 
         //Facebook SDK init

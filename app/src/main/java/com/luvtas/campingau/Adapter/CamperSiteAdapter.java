@@ -90,7 +90,7 @@ public class CamperSiteAdapter extends RecyclerView.Adapter<CamperSiteAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return 0;
+        return camperSiteModels.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

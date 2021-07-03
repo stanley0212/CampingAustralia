@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Ui.CampSitePostActivity"></activity>
+        <activity android:name=".Ui.OpenImageActivity"></activity>
+        <activity android:name=".Ui.CampSitePostActivity" />
         <activity android:name=".Ui.CommentsActivity" />
         <activity android:name=".Ui.PostActivity" />
         <activity android:name=".Ui.ResetPasswordActivity" />

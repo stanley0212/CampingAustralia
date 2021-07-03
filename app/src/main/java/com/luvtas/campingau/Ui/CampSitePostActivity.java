@@ -20,11 +20,14 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,12 +35,17 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
+import com.luvtas.campingau.Model.UserModel;
 import com.luvtas.campingau.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -55,7 +63,14 @@ public class CampSitePostActivity extends AppCompatActivity {
     private StorageTask uploadTask;
     private StorageReference storageReference;
     private ChipGroup chipGroup;
+    public Button btnShowResult;
+    public ArrayList<Boolean> booleanArrayList = new ArrayList<>();
     Dialog dialog;
+
+    private FirebaseUser firebaseUser;
+    private String userid, currentname,currentProfileImage;
+    private TextView username;
+    private ImageView profile_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +116,9 @@ public class CampSitePostActivity extends AppCompatActivity {
         {
             Chip chip = new Chip(this);
             chip.setText(camp);
-            chip.setChipBackgroundColorResource(R.color.colorAccent);
+            //chip.setChipBackgroundColorResource(R.color.colorAccent);
             chip.setCloseIconVisible(true);
-            chip.setTextColor(getResources().getColor(R.color.white));
+            chip.setTextColor(getResources().getColor(R.color.black));
             //chip.setTextAppearance(R.style.ChipTextAppearance);
             chip.setId(ViewCompat.generateViewId());
 
@@ -119,8 +134,6 @@ public class CampSitePostActivity extends AppCompatActivity {
                 group.isClickable();
             }
         });
-
-
 
         // Campsite Sub ArrayList
         List<String> sub = new ArrayList<>();
@@ -179,7 +192,25 @@ public class CampSitePostActivity extends AppCompatActivity {
                 postDetails();
             }
         });
+
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        userid = firebaseUser.getUid();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                currentname = userModel.getUsername();
+                currentProfileImage = userModel.getUserimage();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -239,12 +270,11 @@ public class CampSitePostActivity extends AppCompatActivity {
                             hashMap.put("CamperSiteImage", myUrl);
                             hashMap.put("CamperSiteDescription", campsite_description.getText().toString());
                             hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                            hashMap.put("username", FirebaseAuth.getInstance().getCurrentUser());
+                            hashMap.put("username", currentname);
                             hashMap.put("CamperSiteAddress", campsite_address.getText().toString());
                             hashMap.put("CamperSiteInfo", campsite_info.getText().toString());
                             hashMap.put("CamperSiteName",campsite_name.getText().toString());
                             hashMap.put("CamperSiteSummary", chipGroup.getCheckedChipId());
-
 
                             reference.child(postid).setValue(hashMap);
                             progressDialog.dismiss();
