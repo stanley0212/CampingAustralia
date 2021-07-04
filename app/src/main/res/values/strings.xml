@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Camping Now</string>
+    <string name="app_name">Fishing Camping</string>
     <string name="facebook_app_id">179352260623510</string>
     <string name="fb_login_protocol_scheme">fb179352260623510</string>
 
@@ -96,7 +96,7 @@
     <string name="campsite_internet">Internet</string>
     <string name="campsite_swimming_pool">Swimming Pool</string>
     <string name="campsite_info">Camping Information</string>
-    <string name="campsite_summary">Summary</string>
+    <string name="campsite_offers">What this place offers</string>
     <string name="campsite_description1">Description</string>
     <!-- Sub Array -->
     <string name="choose_sub">Choose Sub</string>
@@ -108,4 +108,13 @@
     <string name="nt">NT</string>
     <string name="sa">SA</string>
     <string name="wa">WA</string>
+    <!-- Rating -->
+    <string name="please_write_something">Please write something</string>
+    <string name="rating_campsite">Rating Campsite</string>
+    <string name="please_fill_information">Please fill information</string>
+    <string name="rating_cancel">Cancel</string>
+    <string name="rating_ok">ok</string>
+
+    <!-- Google API Key-->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAF2FpEl2tYHABFuUFKa5XDa5c2Q_1yj0k</string>
 </resources>

@@ -65,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseReference reference;
     ProgressDialog progressDialog;
     private CallbackManager callbackManager;
+    private List<AuthUI.IdpConfig> providers;
     private static final String TAG = "FacebookAuthentication";
 
     @Override
@@ -98,6 +99,11 @@ public class LoginActivity extends AppCompatActivity {
         txt_forgetpassword = findViewById(R.id.txt_forget_password);
         facebook_login = findViewById(R.id.facebook_login);
         google_login = findViewById(R.id.google_login);
+
+//        providers = Arrays.asList(new AuthUI.IdpConfig.PhoneBuilder().build(),
+//                new AuthUI.IdpConfig.EmailBuilder().build(),
+//                new AuthUI.IdpConfig.FacebookBuilder().build(),
+//                new AuthUI.IdpConfig.GoogleBuilder().build());
 
 
         //Facebook SDK init

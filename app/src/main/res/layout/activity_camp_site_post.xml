@@ -84,13 +84,13 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/location"
-                android:textStyle="bold"
-                android:textSize="20dp"
-                android:layout_margin="20dp"/>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/location"-->
+<!--                android:textStyle="bold"-->
+<!--                android:textSize="20dp"-->
+<!--                android:layout_margin="20dp"/>-->
 
             <Spinner
                 android:id="@+id/spinner_sub"
@@ -114,13 +114,41 @@
             android:textSize="18sp"
             android:padding="8dp"/>
 
-        <EditText
+<!--        <EditText-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@null"-->
+<!--            android:drawableLeft="@drawable/ic_location_on_black_24dp"-->
+<!--            android:id="@+id/campsite_address"-->
+<!--            android:hint="@string/campsite_post_address"-->
+<!--            android:padding="8dp"/>-->
+
+        <fragment
+            android:id="@+id/places_autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:padding="8dp"
             android:id="@+id/campsite_address"
-            android:hint="@string/campsite_post_address"
-            android:padding="8dp"/>
+            android:text="Campsite Address"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/place_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/place_latlng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/campsite_info"
@@ -136,7 +164,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/campsite_summary"
+            android:text="@string/campsite_offers"
             android:padding="8dp"
             android:textStyle="bold"
             android:textSize="18sp"

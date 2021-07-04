@@ -97,7 +97,7 @@
     <string name="campsite_internet">网路</string>
     <string name="campsite_swimming_pool">游泳池</string>
     <string name="campsite_info">露营资讯</string>
-    <string name="campsite_summary">概括</string>
+    <string name="campsite_offers">露营区提供的设备</string>
     <string name="campsite_description1">说一点描述吧</string>
     <!-- Sub Array -->
     <string name="choose_sub">请选择哪一州</string>
@@ -109,4 +109,12 @@
     <string name="nt">NT</string>
     <string name="sa">SA</string>
     <string name="wa">WA</string>
+    <!-- Rating -->
+    <string name="please_write_something">欢迎留下评价</string>
+    <string name="rating_campsite">露营区评价</string>
+    <string name="please_fill_information">说些什么吧</string>
+    <string name="rating_cancel">取消</string>
+    <string name="rating_ok">确定</string>
+    <!-- Google API Key-->
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAF2FpEl2tYHABFuUFKa5XDa5c2Q_1yj0k</string>
 </resources>

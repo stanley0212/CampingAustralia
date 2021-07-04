@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -18,24 +19,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.luvtas.campingau.Adapter.CamperSiteAdapter;
 import com.luvtas.campingau.Model.CamperSiteModel;
+import com.luvtas.campingau.Model.RatingModel;
+import com.luvtas.campingau.Model.UserModel;
 import com.luvtas.campingau.R;
 import com.luvtas.campingau.Ui.CampSitePostActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ExploreFragment extends Fragment {
@@ -43,10 +52,14 @@ public class ExploreFragment extends Fragment {
     TabLayout tabLayout;
     ViewPager viewPager;
 
+
     private RecyclerView recyclerView;
     private CamperSiteAdapter camperSiteAdapter;
     private List<CamperSiteModel> camperSiteModel;
     EditText seatch_bar;
+    private FirebaseUser firebaseUser;
+    private String uid, username, comment;
+    private float rating;
 
 
     public ExploreFragment() {
@@ -57,7 +70,55 @@ public class ExploreFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference_image = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        reference_image.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserModel userModel = dataSnapshot.getValue(UserModel.class);
+                uid = userModel.getId();
+                username = userModel.getUsername();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
+    
+//    void onRaringButtonClick(){
+//        showDialogRating();
+//    }
+//
+//    private void showDialogRating() {
+//        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+//        builder.setTitle(getContext().getResources().getString(R.string.rating_campsite));
+//        builder.setMessage(getContext().getResources().getString(R.string.please_fill_information));
+//
+//        View itemview = LayoutInflater.from(getContext()).inflate(R.layout.layout_rating, null);
+//        RatingBar ratingBar = (RatingBar) itemview.findViewById(R.id.rating_bar);
+//        EditText rating_comment = (EditText) itemview.findViewById(R.id.rating_comment);
+//
+//        builder.setView(itemview);
+//
+//        builder.setNegativeButton(getContext().getResources().getString(R.string.rating_cancel), (dialog, which) -> {
+//            dialog.dismiss();
+//        });
+//        builder.setPositiveButton(getContext().getResources().getString(R.string.rating_ok), (dialog, which) -> {
+//            RatingModel ratingModel = new RatingModel();
+//            ratingModel.setName(username);
+//            ratingModel.setUid(uid);
+//            ratingModel.setComment(rating_comment.getText().toString());
+//            ratingModel.setRatingValue(ratingBar.getRating());
+//            Map<String,Object> serverTimeStamp = new HashMap<>();
+//            serverTimeStamp.put("timeStamp", ServerValue.TIMESTAMP);
+//            ratingModel.setCommentTimeStamp(serverTimeStamp);
+//        });
+//        AlertDialog dialog = builder.create();
+//        dialog.show();
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

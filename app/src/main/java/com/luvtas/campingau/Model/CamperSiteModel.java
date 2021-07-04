@@ -11,16 +11,26 @@ public class CamperSiteModel {
     String CamperSiteAddress;
     String CamperSiteLatitude;
     String CamperSiteLongitude;
+    String CamperSiteLatLng;
     String CamperSitePrice1;
     String CamperSitePrice2;
     String CamperSiteEmail;
     String CamperSiteSub;
     String CamperSiteDescription;
+    Long ServerTimeStamp;
+
+    public String getCamperSiteLatLng() {
+        return CamperSiteLatLng;
+    }
+
+    public void setCamperSiteLatLng(String camperSiteLatLng) {
+        CamperSiteLatLng = camperSiteLatLng;
+    }
 
     public CamperSiteModel() {
     }
 
-    public CamperSiteModel(String camperSiteID, String camperSiteName, String camperSiteImage, String camperSiteType, String camperSiteDistance, String camperSiteInfo, Long camperSiteSummary, String camperSiteAddress, String camperSiteLatitude, String camperSiteLongitude, String camperSitePrice1, String camperSitePrice2, String camperSiteEmail, String camperSiteSub, String camperSiteDescription) {
+    public CamperSiteModel(String camperSiteID, String camperSiteName, String camperSiteImage, String camperSiteType, String camperSiteDistance, String camperSiteInfo, Long camperSiteSummary, String camperSiteAddress, String camperSiteLatitude, String camperSiteLongitude, String camperSitePrice1, String camperSitePrice2, String camperSiteEmail, String camperSiteSub, String camperSiteDescription, Long serverTimeStamp, String camperSiteLatLng) {
         CamperSiteID = camperSiteID;
         CamperSiteName = camperSiteName;
         CamperSiteImage = camperSiteImage;
@@ -36,6 +46,16 @@ public class CamperSiteModel {
         CamperSiteEmail = camperSiteEmail;
         CamperSiteSub = camperSiteSub;
         CamperSiteDescription = camperSiteDescription;
+        ServerTimeStamp = serverTimeStamp;
+        CamperSiteLatLng = camperSiteLatLng;
+    }
+
+    public Long getServerTimeStamp() {
+        return ServerTimeStamp;
+    }
+
+    public void setServerTimeStamp(Long serverTimeStamp) {
+        ServerTimeStamp = serverTimeStamp;
     }
 
     public String getCamperSiteID() {

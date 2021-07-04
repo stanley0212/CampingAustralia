@@ -3,54 +3,120 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/camping_background"
-        android:id="@+id/campsite_image"/>
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/post_main"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/campsite_image"
-        android:layout_marginStart="5dp"
-        android:orientation="vertical"
-        android:layout_centerVertical="true">
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:padding="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/campsite_name"
+                android:layout_gravity="center_vertical"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:text="Campsite"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:padding="4dp"
+                android:id="@+id/campsite_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Australia"/>
+            <TextView
+                android:visibility="gone"
+                android:padding="4dp"
+                android:id="@+id/campsite_latlng"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/campsite_image"
+                android:src="@drawable/default_photo"/>
+
+            <TextView
+                android:gravity="center"
+                android:layout_marginTop="12dp"
+                android:id="@+id/campsite_sub"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:text="MEL"
+                android:textSize="16dp"
+                android:fontFamily="@font/deathstar"
+                android:textColor="@android:color/white"
+                android:background="@drawable/campsite_label"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp">
+
+            <RatingBar
+                android:id="@+id/rating_bar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/rating_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/rating_bar"
+                android:text="999 ratings"
+                android:layout_marginLeft="8dp"/>
+
+        </RelativeLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/campsite_name"
-            android:text="@string/campSite_name"
-            android:maxLines="1"
-            android:textStyle="bold"/>
+            android:padding="8dp"
+            android:text="Description"
+            android:textColor="@android:color/black"
+            android:textSize="18dp"/>
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:textColor="@android:color/black"
+            android:textSize="18dp"/>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/time"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/campsite_sub"
-            android:text="@string/campSite_sub"
-            android:maxLines="1"
-            android:textStyle="italic"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/campsite_address"
-            android:text="@string/campSite_address"
-            android:textStyle="italic"/>
+            android:padding="8dp"
+            android:text="25/02/2021 10:00"
+            android:textSize="10dp"/>
 
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:background="@drawable/button_background"
-        android:id="@+id/btn_follow"
-        android:text="@string/campsite_follow"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="#c3c3c3"
+        android:layout_below="@id/post_main"/>
 
 </RelativeLayout>
