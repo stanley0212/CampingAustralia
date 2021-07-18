@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_more_horiz_black_24dp"
+        android:id="@+id/more"
+        android:layout_margin="20dp"/>
 
     <LinearLayout
         android:id="@+id/post_main"
@@ -10,10 +18,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/blue_check"
+                android:layout_marginLeft="-12dp"
+                android:layout_toRightOf="@+id/image_profile"
+                android:layout_marginTop="35dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@drawable/blue_check"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="40dp"
@@ -23,6 +40,9 @@
                 android:src="@drawable/default_user"/>
 
             <TextView
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/blue_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/username"
@@ -32,9 +52,11 @@
                 android:text="Username"
                 android:textColor="@color/black"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <RelativeLayout
+            android:visibility="visible"
+            android:id="@+id/R_layout_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <ImageView
@@ -56,6 +78,36 @@
                 android:fontFamily="@font/deathstar"
                 android:textColor="@android:color/white"
                 android:background="@drawable/campsite_label"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:gravity="center"
+            android:id="@+id/R_layout_video"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <VideoView
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:id="@+id/player_video"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_marginTop="10dp"
+                android:adjustViewBounds="true"/>
+            <ImageView
+                android:id="@+id/previewImageView"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:scaleType="center"/>
+            <ImageView
+                android:id="@+id/playButton"
+                android:src="@drawable/video_play"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:scaleType="center"/>
 
         </RelativeLayout>
 
@@ -88,14 +140,34 @@
                 android:layout_toEndOf="@+id/like"
                 android:layout_marginStart="10dp"
                 android:id="@+id/comment"
-                android:src="@drawable/ic_comment_black_24dp"/>
+                android:src="@drawable/comment_bubble"/>
 
             <ImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/save"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_save_in_not_black_24dp"/>
+
+<!--            <ImageView-->
+<!--                android:id="@+id/coin_diamond"-->
+<!--                android:layout_width="30dp"-->
+<!--                android:layout_height="30dp"-->
+<!--                android:src="@drawable/coin_diamond"-->
+<!--                android:layout_toStartOf="@+id/coin_dismond_number"-->
+<!--                />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/coin_dismond_number"-->
+<!--                android:layout_marginTop="4dp"-->
+<!--                android:layout_marginStart="4dp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text=" x 999"-->
+<!--                android:layout_alignParentEnd="true"/>-->
+
+
 
         </RelativeLayout>
 
@@ -110,6 +182,7 @@
             android:textColor="@color/black"/>
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,14 +192,20 @@
             android:textSize="20dp"
             android:textColor="@android:color/black"/>
 
-        <TextView
+        <com.borjabravo.readmoretextview.ReadMoreTextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
             android:text="Camping Now"
             android:textColor="@android:color/black"
-            android:textSize="18dp"/>
+            android:textSize="18dp"
+            app:trimExpandedText="@string/more"
+            app:trimCollapsedText="Show less"
+            app:trimMode="trimModeLength"
+            app:trimLength="200"
+            app:colorClickableText="#808080"
+            android:autoLink="web"/>
 
         <TextView
             android:layout_marginTop="5dp"
@@ -152,7 +231,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="5dp"
-        android:background="#c3c3c3"
+        android:background="#ffffff"
         android:layout_below="@id/post_main"/>
 
 </RelativeLayout>

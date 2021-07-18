@@ -42,6 +42,9 @@
     <string name="must_upload_one_photo">必须上传一张照片</string>
     <string name="alert_error">提示</string>
     <string name="location">位置 :</string>
+    <string name="camping">露营</string>
+    <string name="fishing">钓鱼</string>
+    <string name="hiking">登山</string>
     <!-- Spinner -->
     <string-array name="spinner_sub">
         <item>请选择哪一州</item>
@@ -61,11 +64,24 @@
     <string name="comments"> 评论</string>
     <string name="like">个喜欢</string>
     <string name="liked">喜欢</string>
+    <string name="more">...更多</string>
     <!-- Profile -->
     <string name="posts">文章数</string>
+    <string name="follow">追踪</string>
     <string name="follows">追踪者</string>
-    <string name="following">追踪</string>
+    <string name="following">追踪中</string>
     <string name="edit_profile">编辑档案</string>
+    <string name="save">储存</string>
+    <string name="change_photo">更换头像</string>
+    <string name="fullname">名字</string>
+    <string name="email">电邮</string>
+    <string name="personal_info">个人简介</string>
+    <string name="upload">上传中...</string>
+    <string name="upload_failed">上传失败</string>
+    <string name="no_image_select">没有选择图片</string>
+    <string name="send_message">发送讯息</string>
+    <string name="no_fans">目前没有追踪的人 \n 快去认识新朋友吧</string>
+    <string name="logout">登出</string>
     <!-- CameSite Explore -->
     <string name="campSite_name">露营地名称</string>
     <string name="campSite_sub">Tas</string>
@@ -117,4 +133,23 @@
     <string name="rating_ok">确定</string>
     <!-- Google API Key-->
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAF2FpEl2tYHABFuUFKa5XDa5c2Q_1yj0k</string>
+    <!-- Notification -->
+    <string name="notification">讯息通知</string>
+    <string name="no_notification">您目前没有讯息通知 \n 快去认识新朋友吧!</string>
+    <string name="no_message">您目前没有聊天讯息 \n 快去认识新朋友吧!</string>
+    <string name="b_message">聊天</string>
+    <string name="b_notification">通知</string>
+    <!-- HomePost -->
+    <string name="edit">编辑</string>
+    <string name="cancel">取消</string>
+    <string name="edit_post">编辑文章</string>
+    <string name="delete_post">删除文章</string>
+    <string name="delete_post_complete">刪除!!!</string>
+    <string name="do_you_want_to_delete">是否要删除文章</string>
+    <string name="do_you_sure_want_to_delete_this_article">您确定要删除这篇文章</string>
+    <string name="no">否</string>
+    <string name="yes">是</string>
+    <string name="report_post">检举文章</string>
+    <!-- Chat -->
+    <string name="you_cannot_send_empty_message">您不可以发送空白讯息</string>
 </resources>

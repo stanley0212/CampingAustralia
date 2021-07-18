@@ -8,4 +8,6 @@
     <color name="red">#D3443A</color>
     <color name="bottomNavigationColor">#03A9F4</color>
     <color name="bottomNavigationColorBlueLight">#B8E6FC</color>
+    <color name="navy_blue">#1E90FF</color>
+    <color name="message_left_color">#E5C1C5</color>
 </resources>

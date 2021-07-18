@@ -1,15 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#ffffff"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Fragment.MessageFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/no_re_me"
+        android:visibility="gone"
+        android:background="#ffffff"
         android:gravity="center"
+        android:layout_below="@+id/bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Message" />
+        android:layout_height="match_parent">
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/no_noti"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/no_message"/>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/no_me_txt"
+            android:padding="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/no_message"/>
+    </LinearLayout>
 
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recycler_view"/>
+
+</RelativeLayout>

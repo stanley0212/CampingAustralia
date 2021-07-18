@@ -1,18 +1,27 @@
 package com.luvtas.campingau.Model;
 
 public class UserModel {
-    private String id, email, password, userimage, username, bio;
+    private String id, email, password, userimage, username, bio,blue_check;
 
     public UserModel() {
     }
 
-    public UserModel(String id, String email, String password, String userimage, String username, String bio) {
+    public UserModel(String id, String email, String password, String userimage, String username, String bio, String blue_check) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.userimage = userimage;
         this.username = username;
         this.bio = bio;
+        this.blue_check = blue_check;
+    }
+
+    public String getBlue_check() {
+        return blue_check;
+    }
+
+    public void setBlue_check(String blue_check) {
+        this.blue_check = blue_check;
     }
 
     public String getId() {

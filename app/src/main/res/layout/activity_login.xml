@@ -19,7 +19,7 @@
         android:layout_marginTop="200dp"
         android:gravity="center_horizontal"
         android:textColor="@android:color/white"
-        android:fontFamily="@font/deathstar"/>
+        android:fontFamily="@font/mightype"/>
 
     <Button
         android:id="@+id/btn_login"

@@ -4,14 +4,24 @@ public class CommentModel {
     private String comment;
     private String publisher;
     private Long time;
+    private String commentid;
 
     public CommentModel() {
     }
 
-    public CommentModel(String comment, String publisher, Long time) {
+    public CommentModel(String comment, String publisher, Long time, String commentid) {
         this.comment = comment;
         this.publisher = publisher;
         this.time = time;
+        this.commentid = commentid;
+    }
+
+    public String getCommentid() {
+        return commentid;
+    }
+
+    public void setCommentid(String commentid) {
+        this.commentid = commentid;
     }
 
     public String getComment() {

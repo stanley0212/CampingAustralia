@@ -45,12 +45,33 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+<!--            <ImageView-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:id="@+id/campsite_image"-->
+<!--                android:src="@drawable/default_photo"/>-->
+
             <ImageView
-                android:scaleType="centerCrop"
+                android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:id="@+id/campsite_image"
-                android:src="@drawable/default_photo"/>
+                android:adjustViewBounds="true"
+                android:layout_gravity="center"
+                android:src="@drawable/default_photo"
+                android:scaleType="centerCrop" />
+
+<!--            <com.denzcoskun.imageslider.ImageSlider-->
+<!--                android:id="@+id/campsite_image"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="200dp"-->
+<!--                app:iss_auto_cycle="true"-->
+<!--                app:iss_period="1000"-->
+<!--                app:iss_delay="0"/>-->
+<!--            <androidx.recyclerview.widget.RecyclerView-->
+<!--                android:id="@+id/campsite_image"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200dp"/>-->
 
             <TextView
                 android:gravity="center"

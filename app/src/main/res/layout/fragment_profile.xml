@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="#ffffff"
+    android:id="@+id/fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.ProfileFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -13,32 +15,38 @@
         android:background="?android:attr/windowBackground">
         
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:fontFamily="@font/deathstar"
+            app:titleTextColor="#007FFF"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/windowBackground"
-            android:id="@+id/toolbar">
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:theme="@style/ToolbarTheme"
+            app:titleTextAppearance="@style/Toolbar.TitleText"
+            app:title="@string/app_name">
             
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+<!--            <RelativeLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:maxLines="1"
-                    android:textStyle="bold"
-                    android:id="@+id/username"/>
-                
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/options"
-                    android:src="@drawable/ic_options_black_24dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="10dp"/>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textSize="18sp"-->
+<!--                    android:maxLines="1"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:id="@+id/username"/>-->
+<!--                -->
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:id="@+id/options"-->
+<!--                    android:src="@drawable/ic_options_black_24dp"-->
+<!--                    android:layout_alignParentEnd="true"-->
+<!--                    android:layout_marginEnd="10dp"/>-->
 
-            </RelativeLayout>
+<!--            </RelativeLayout>-->
             
         </androidx.appcompat.widget.Toolbar>
         
@@ -102,6 +110,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/follows2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="35dp"
@@ -125,6 +134,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/following2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="35dp"

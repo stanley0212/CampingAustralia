@@ -1,17 +1,22 @@
 package com.luvtas.campingau.Adapter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,6 +33,7 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static java.text.DateFormat.getDateTimeInstance;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
@@ -35,10 +41,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private Context mContext;
     private List<CommentModel> mComment;
     private FirebaseUser firebaseUser;
+    private String postid;
 
-    public CommentAdapter(Context mContext, List<CommentModel> mComment) {
+    public CommentAdapter(Context mContext, List<CommentModel> mComment, String postid) {
         this.mContext = mContext;
         this.mComment = mComment;
+        this.postid = postid;
     }
 
     @NonNull
@@ -71,6 +79,41 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 Intent intent = new Intent(mContext, MainActivity.class);
                 intent.putExtra("publisherid", commentModel.getPublisher());
                 mContext.startActivity(intent);
+            }
+        });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(commentModel.getPublisher().equals(firebaseUser.getUid())){
+                    AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+                    alertDialog.setTitle(getApplicationContext().getResources().getString(R.string.do_you_want_to_delete));
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getApplicationContext().getResources().getString(R.string.no),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getApplicationContext().getResources().getString(R.string.yes),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    FirebaseDatabase.getInstance().getReference("Comments")
+                                            .child(postid).child(commentModel.getCommentid()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                Toast.makeText(mContext,getApplicationContext().getResources().getString(R.string.delete_post_complete), Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    });
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+                return true;
             }
         });
 

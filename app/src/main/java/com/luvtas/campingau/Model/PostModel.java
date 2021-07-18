@@ -10,11 +10,38 @@ public class PostModel {
     private Long time;
     private String username;
     private String profile_image;
+    private String blue_check;
+    private String type;
+    private String imageType;
+
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getBlue_check() {
+        return blue_check;
+    }
+
+    public void setBlue_check(String blue_check) {
+        this.blue_check = blue_check;
+    }
 
     public PostModel() {
     }
 
-    public PostModel(String postid, String postimage, String description, String publisher, String sub, String title, Long time, String username, String profile_image) {
+    public PostModel(String postid, String postimage, String description, String publisher, String sub, String title, Long time, String username, String profile_image, String blue_check, String type, String imageType) {
         this.postid = postid;
         this.postimage = postimage;
         this.description = description;
@@ -24,6 +51,9 @@ public class PostModel {
         this.time = time;
         this.username = username;
         this.profile_image = profile_image;
+        this.blue_check = blue_check;
+        this.type = type;
+        this.imageType = imageType;
     }
 
     public String getUsername() {

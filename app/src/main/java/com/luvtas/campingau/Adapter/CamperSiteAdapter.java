@@ -63,6 +63,7 @@ public class CamperSiteAdapter extends RecyclerView.Adapter<CamperSiteAdapter.Vi
         viewHolder.campsite_latlng.setText(camperSiteModel.getCamperSiteLatLng());
         Glide.with(mContext).load(camperSiteModel.getCamperSiteImage()).into(viewHolder.campsite_image);
 
+
 //        //isFollowing(camperSiteModel.getCamperSiteID(),viewHolder.btn_follow);
 //
 //        if(camperSiteModel.getCamperSiteID().equals(firebaseUser.getUid())){

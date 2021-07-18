@@ -9,6 +9,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -23,6 +24,8 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -35,7 +38,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.luvtas.campingau.Adapter.CamperSiteAdapter;
+import com.luvtas.campingau.Adapter.MultiImageAdapter;
 import com.luvtas.campingau.Model.CamperSiteModel;
+import com.luvtas.campingau.Model.MultiImageModel;
 import com.luvtas.campingau.Model.RatingModel;
 import com.luvtas.campingau.Model.UserModel;
 import com.luvtas.campingau.R;
@@ -61,6 +66,8 @@ public class ExploreFragment extends Fragment {
     private String uid, username, comment;
     private float rating;
 
+    private  MultiImageModel camperSiteModelMulitImage;
+
 
     public ExploreFragment() {
         // Required empty public constructor
@@ -85,6 +92,8 @@ public class ExploreFragment extends Fragment {
 
             }
         });
+
+
 
     }
     
@@ -137,6 +146,15 @@ public class ExploreFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+//        String key = getArguments().getString("Campsite");
+//        camperSiteModelMulitImage = ViewModelProviders.of(this).get(MultiImageModel.class);
+//        init();
+//        camperSiteModelMulitImage.getMultiImageList(key).observe(getViewLifecycleOwner(), multiImageModels -> {
+//            MultiImageAdapter multiImageAdapter = new MultiImageAdapter(getContext(), multiImageModels);
+//        });
+
+
         recyclerView = view.findViewById(R.id.recycler_view_campsite);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -155,7 +173,7 @@ public class ExploreFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                searchCampSite(charSequence.toString().toLowerCase());
+                searchCampSite(charSequence.toString());
             }
 
             @Override
@@ -167,8 +185,12 @@ public class ExploreFragment extends Fragment {
         return view;
     }
 
+    private void init() {
+    }
+
     private void searchCampSite(final String s){
-        Query query = FirebaseDatabase.getInstance().getReference("Campsite").orderByChild("CamperSiteName").startAt(s).endAt(s+"\uf8ff");
+        //Query query = FirebaseDatabase.getInstance().getReference("Campsite").orderByChild("CamperSiteName").startAt(s).endAt(s+"\uf8ff");
+        Query query = FirebaseDatabase.getInstance().getReference("Campsite").orderByChild("CamperSiteName");
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -207,6 +229,9 @@ public class ExploreFragment extends Fragment {
 
             }
         });
+
+
+
     }
 
 }

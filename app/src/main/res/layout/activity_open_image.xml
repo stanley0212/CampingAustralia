@@ -14,12 +14,34 @@
         android:transitionName="sharedView"
         />
 
-<!--    <ImageView-->
-<!--        android:id="@+id/image"-->
-<!--        android:layout_width="fill_parent"-->
-<!--        android:layout_height="fill_parent"-->
-<!--        android:adjustViewBounds="true"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:scaleType="centerCrop" />-->
+    <RelativeLayout
+        android:visibility="gone"
+        android:gravity="center"
+        android:id="@+id/R_layout_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <VideoView
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:id="@+id/player_video"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:adjustViewBounds="true"/>
+        <ImageView
+            android:id="@+id/previewImageView"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:scaleType="center"/>
+        <ImageView
+            android:id="@+id/playButton"
+            android:src="@drawable/video_play"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:scaleType="center"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

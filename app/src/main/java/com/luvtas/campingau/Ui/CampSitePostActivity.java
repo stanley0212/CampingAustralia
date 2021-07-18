@@ -346,6 +346,8 @@ public class CampSitePostActivity extends AppCompatActivity {
                             hashMap.put("ServerTimeStamp", ServerValue.TIMESTAMP);
                             hashMap.put("CamperSiteSummary", chipGroup.getCheckedChipId());
                             hashMap.put("CamperSiteLatLng", place_latlng.getText().toString());
+                            hashMap.put("CamperSiteLongitude", placeSelected.getLatLng().longitude);
+                            hashMap.put("CamperSiteLatitude", placeSelected.getLatLng().latitude);
 
                             reference.child(postid).setValue(hashMap);
                             progressDialog.dismiss();

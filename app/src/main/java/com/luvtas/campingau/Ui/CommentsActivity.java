@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -32,6 +33,8 @@ import com.r0adkll.slidr.model.SlidrInterface;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class CommentsActivity extends AppCompatActivity {
 
@@ -63,12 +66,16 @@ public class CommentsActivity extends AppCompatActivity {
             }
         });
 
+        Intent intent = getIntent();
+        postid = intent.getStringExtra("postid");
+        publisherid = intent.getStringExtra("publisherid");
+
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         commentModelList = new ArrayList<>();
-        commentAdapter = new CommentAdapter(this,commentModelList);
+        commentAdapter = new CommentAdapter(this,commentModelList,postid);
         recyclerView.setAdapter(commentAdapter);
 
 
@@ -94,9 +101,7 @@ public class CommentsActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        postid = intent.getStringExtra("postid");
-        publisherid = intent.getStringExtra("publisherid");
+
 
         post.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,13 +124,44 @@ public class CommentsActivity extends AppCompatActivity {
     private void add_Comment() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Comments").child(postid);
 
+        String commentid = reference.push().getKey();
+
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("comment", addComment.getText().toString());
         hashMap.put("publisher", firebaseUser.getUid());
         hashMap.put("image_profile", currentProfileImage);
         hashMap.put("time", ServerValue.TIMESTAMP);
-        reference.push().setValue(hashMap);
+        hashMap.put("commentid", commentid);
+        reference.child(commentid).setValue(hashMap);
+        addNotifications();
         addComment.setText("");
+    }
+
+    private void addNotifications(){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Notifications").child(publisherid);
+
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("userid", firebaseUser.getUid());
+        hashMap.put("comment", " commented: "+addComment.getText().toString());
+        hashMap.put("postid", postid);
+        hashMap.put("ispost", true);
+        hashMap.put("time", ServerValue.TIMESTAMP);
+        reference.push().setValue(hashMap);
+    }
+
+    private void nrLikes(final TextView likes, String postid){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Likes").child(postid);
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                likes.setText(dataSnapshot.getChildrenCount()+ " "+ getApplicationContext().getResources().getString(R.string.like));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     private void getImage(){

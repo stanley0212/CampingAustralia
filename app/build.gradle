@@ -38,6 +38,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:20.0.0'
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -66,9 +67,27 @@ dependencies {
     //slide avtivity
     implementation 'com.r0adkll:slidableactivity:2.0.6'
     //Tab Layout
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.material:material:1.4.0'
     //滑動圖片
     implementation 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
     //Google 地址自動新增
     implementation 'com.google.android.libraries.places:places:2.4.0'
+    //Slider Image
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
+    //Readmore
+    implementation 'com.borjabravo:readmoretextview:2.0.1'
+    // 手機廣告
+    implementation 'com.github.daoibrahim:AdmobAdvancedNativeRecyclerview:1.0.0'
+    // EditText
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+    // Firebase Analytics
+    implementation platform('com.google.firebase:firebase-bom:28.2.1')
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-analytics'
+    // Dexter
+    implementation 'com.karumi:dexter:6.0.1'
+    // Exoplayer
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.14.1'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.14.1'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.14.1'
 }
