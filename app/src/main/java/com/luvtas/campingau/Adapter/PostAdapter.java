@@ -133,11 +133,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         nrLikes(holder.likes, postModel.getPostid());
         getComments(postModel.getPostid(), holder.comments);
         isSaved(postModel.getPostid(), holder.save);
-        if(postModel.getBlue_check().equals("1")){
-            holder.blue_check.setVisibility(View.VISIBLE);
-        } else {
-            holder.blue_check.setVisibility(View.GONE);
-        }
+//        if(postModel.getBlue_check().equals("1")){
+//            holder.blue_check.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.blue_check.setVisibility(View.GONE);
+//        }
 
         holder.image_profile.setOnClickListener(new View.OnClickListener() {
             @Override

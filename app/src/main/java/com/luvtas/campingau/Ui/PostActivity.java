@@ -4,20 +4,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatRadioButton;
-import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -28,7 +32,6 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
@@ -49,20 +52,18 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
-import com.google.firebase.storage.UploadTask;
 import com.luvtas.campingau.Model.UserModel;
 import com.luvtas.campingau.R;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrInterface;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class PostActivity extends AppCompatActivity {
-    private Uri imageUri, videoUri;
+    private Uri videoUri;
     private String myUrl = "";
     private StorageTask uploadTask;
     private StorageReference storageReference, storageReference_video;
@@ -83,7 +84,9 @@ public class PostActivity extends AppCompatActivity {
     private SlidrInterface slidrInterface;
     AppCompatRadioButton type1, type2, type3;
     String type,newtype;
+    static List<Uri> imageListUri = new ArrayList<>(10);
     MediaController mediaController;
+    RecyclerView recyclerView;
     VideoView videoView;
     private static final int PICK_VIDEO = 1;
     ProgressBar progressBar;
@@ -100,7 +103,7 @@ public class PostActivity extends AppCompatActivity {
 
         cancel = findViewById(R.id.cancel);
         image_added = findViewById(R.id.image_added);
-        image_show = findViewById(R.id.image_show);
+//        image_show = findViewById(R.id.image_show);
         post = findViewById(R.id.post);
         //post_title = findViewById(R.id.post_title);
         post_description = findViewById(R.id.post_description);
@@ -113,6 +116,7 @@ public class PostActivity extends AppCompatActivity {
         type3 = findViewById(R.id.type3);
         video_added = findViewById(R.id.video_added);
         videoView = findViewById(R.id.videoView);
+        recyclerView = findViewById(R.id.rvImage);
         mediaController = new MediaController(this);
         videoView.setMediaController(mediaController);
         videoView.start();
@@ -189,8 +193,8 @@ public class PostActivity extends AppCompatActivity {
         post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(image_check == "ok"){
-                    uploadImage();
+                if(image_check.equals("ok")){
+                    uploadImage(0);
                 } else {
                     UploadVideo();
                 }
@@ -219,6 +223,9 @@ public class PostActivity extends AppCompatActivity {
 
 
         slidrInterface = Slidr.attach(this);  // 向右滑動 關閉 Activity
+
+        recyclerView.setAdapter(new CustomAdapter());
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 9));
     }
 
     private String getExt(Uri uri){
@@ -333,7 +340,8 @@ public class PostActivity extends AppCompatActivity {
         return mime.getExtensionFromMimeType(contentResolver.getType(uri));
     }
 
-    private void uploadImage(){
+    private void uploadImage(int index){
+        Uri imageUri = imageListUri.get(index);
         if(spinner.getSelectedItem().toString().equals(getApplicationContext().getResources().getString(R.string.choose_sub))) {
             AlertDialog alertDialog = new AlertDialog.Builder(this)
                     .setTitle(getApplicationContext().getResources().getString(R.string.alert_error))
@@ -345,7 +353,7 @@ public class PostActivity extends AppCompatActivity {
                         }
                     }).create();
             alertDialog.show();
-        } else if(image_check == "ok") {
+        } else if(image_check.equals("ok")) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setMessage(getApplicationContext().getResources().getString(R.string.posting));
             progressDialog.show();
@@ -355,51 +363,50 @@ public class PostActivity extends AppCompatActivity {
                         + "." + getFileExtension(imageUri));
 
                 uploadTask = filerefrence.putFile(imageUri);
-                uploadTask.continueWithTask(new Continuation() {
-                    @Override
-                    public Object then(@NonNull Task task) throws Exception {
-                        if (!task.isSuccessful()) {
-                            throw task.getException();
-                        }
-                        return filerefrence.getDownloadUrl();
+                uploadTask.continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        throw task.getException();
                     }
-                }).addOnCompleteListener(new OnCompleteListener() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            Object downloadUri = task.getResult();
-                            myUrl = downloadUri.toString();
+                    return filerefrence.getDownloadUrl();
+                }).addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Object downloadUri = task.getResult();
+                        myUrl = downloadUri.toString();
 
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
-                            String postid = reference.push().getKey();
+                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
+                        String postid = reference.push().getKey();
 
-                            if(type1.equals("Camping")){
-                                newtype = "Camping";
-                            } else {
-                                newtype = type;
-                            }
+                        if(type1.equals("Camping")){
+                            newtype = "Camping";
+                        } else {
+                            newtype = type;
+                        }
 
-                            HashMap<String, Object> hashMap = new HashMap<>();
-                            hashMap.put("postid", postid);
-                            hashMap.put("sub", spinner.getSelectedItem().toString());
-                            hashMap.put("postimage", myUrl);
-                            hashMap.put("description", post_description.getText().toString());
-                            hashMap.put("title", "");
-                            hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                            hashMap.put("time", ServerValue.TIMESTAMP);
-                            hashMap.put("username", currentname);
-                            hashMap.put("profile_image", currentProfileImage);
-                            hashMap.put("blue_check", blue_check);
-                            hashMap.put("imageType","image");
-                            hashMap.put("type",newtype);
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("postid", postid);
+                        hashMap.put("sub", spinner.getSelectedItem().toString());
+                        hashMap.put("postimage", myUrl);
+                        hashMap.put("description", post_description.getText().toString());
+                        hashMap.put("title", "");
+                        hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        hashMap.put("time", ServerValue.TIMESTAMP);
+                        hashMap.put("username", currentname);
+                        hashMap.put("profile_image", currentProfileImage);
+                        hashMap.put("blue_check", blue_check);
+                        hashMap.put("imageType","image");
+                        hashMap.put("type",newtype);
 
-                            reference.child(postid).setValue(hashMap);
-                            progressDialog.dismiss();
+                        reference.child(postid).setValue(hashMap);
+                        progressDialog.dismiss();
+                        if (index == imageListUri.size() - 1) {
+                            imageListUri.clear();
                             startActivity(new Intent(PostActivity.this, MainActivity.class));
                             finish();
                         } else {
-                            Toast.makeText(PostActivity.this, getApplicationContext().getResources().getString(R.string.failed), Toast.LENGTH_SHORT).show();
+                            uploadImage(index + 1);
                         }
+                    } else {
+                        Toast.makeText(PostActivity.this, getApplicationContext().getResources().getString(R.string.failed), Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -425,11 +432,15 @@ public class PostActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(image_check == "ok"){
+        if(image_check.equals("ok")){
             if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
                 CropImage.ActivityResult result = CropImage.getActivityResult(data);
-                imageUri = result.getUri();
-                image_show.setImageURI(imageUri);
+                if (result != null) {
+                    imageListUri.add(result.getUri());
+                    if (recyclerView.getAdapter() != null) {
+                        recyclerView.getAdapter().notifyDataSetChanged();
+                    }
+                }
             } else {
                 //Toast.makeText(this, getApplicationContext().getResources().getString(R.string.something_gone_wrong), Toast.LENGTH_SHORT).show();
 //            startActivity(new Intent(PostActivity.this, MainActivity.class));
@@ -453,5 +464,55 @@ public class PostActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    static class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+
+
+        /**
+         * Provide a reference to the type of views that you are using
+         * (custom ViewHolder).
+         */
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            private final ImageView imageView;
+
+            public ViewHolder(View view) {
+                super(view);
+                imageView = view.findViewById(R.id.ivPreview);
+            }
+
+            public ImageView getImageView() {
+                return imageView;
+            }
+        }
+
+        // Create new views (invoked by the layout manager)
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            // Create a new view, which defines the UI of the list item
+            View view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.image_row_item, viewGroup, false);
+
+            return new ViewHolder(view);
+        }
+
+        // Replace the contents of a view (invoked by the layout manager)
+        @Override
+        public void onBindViewHolder(ViewHolder viewHolder, final int position) {
+
+            // Get element from your dataset at this position and replace the
+            // contents of the view with that element
+            Glide.with(viewHolder.itemView).load(imageListUri.get(position)).into(viewHolder.imageView);
+            viewHolder.itemView.findViewById(R.id.ivDelete).setOnClickListener(v -> {
+                imageListUri.remove(position);
+                notifyDataSetChanged();
+            });
+        }
+
+        // Return the size of your dataset (invoked by the layout manager)
+        @Override
+        public int getItemCount() {
+            return imageListUri.size();
+        }
     }
 }
