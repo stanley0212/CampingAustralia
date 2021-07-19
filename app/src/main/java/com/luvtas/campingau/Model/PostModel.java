@@ -14,30 +14,6 @@ public class PostModel {
     private String type;
     private String imageType;
 
-    public String getImageType() {
-        return imageType;
-    }
-
-    public void setImageType(String imageType) {
-        this.imageType = imageType;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getBlue_check() {
-        return blue_check;
-    }
-
-    public void setBlue_check(String blue_check) {
-        this.blue_check = blue_check;
-    }
-
     public PostModel() {
     }
 
@@ -54,30 +30,6 @@ public class PostModel {
         this.blue_check = blue_check;
         this.type = type;
         this.imageType = imageType;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getProfile_image() {
-        return profile_image;
-    }
-
-    public void setProfile_image(String profile_image) {
-        this.profile_image = profile_image;
-    }
-
-    public Long getTime() {
-        return time;
-    }
-
-    public void setTime(Long time) {
-        this.time = time;
     }
 
     public String getPostid() {
@@ -126,5 +78,53 @@ public class PostModel {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Long getTime() {
+        return time;
+    }
+
+    public void setTime(Long time) {
+        this.time = time;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getProfile_image() {
+        return profile_image;
+    }
+
+    public void setProfile_image(String profile_image) {
+        this.profile_image = profile_image;
+    }
+
+    public String getBlue_check() {
+        return blue_check;
+    }
+
+    public void setBlue_check(String blue_check) {
+        this.blue_check = blue_check;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getImageType() {
+        return imageType;
+    }
+
+    public void setImageType(String imageType) {
+        this.imageType = imageType;
     }
 }

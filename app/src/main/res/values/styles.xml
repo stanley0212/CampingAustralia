@@ -1,6 +1,6 @@
 <resources>
 
-    <!-- Base application theme. -->
+<!--     Base application theme.-->
 <!--    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">-->
 <!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
 <!--        <item name="colorPrimary">@color/colorPrimary</item>-->
@@ -70,6 +70,19 @@
     <!-- Delete 圓角 -->
     <style name="delete_post" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/dialog_corner_16</item>
+    </style>
+
+    <style name="Widget.MyApp.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+        ...
+        <item name="materialThemeOverlay">@style/ThemeOverlay.MyApp.Chip.Choice</item>
+    </style>
+
+    <!-- Disabling elevation overlays because when chip's default background/surface
+         composite are combined with elevation overlays in a highly elevated dialog,
+         the resulting color becomes too light and causes contrast
+         issues. -->
+    <style name="ThemeOverlay.MyApp.Chip.Choice" parent="">
+        <item name="elevationOverlayEnabled">false</item>
     </style>
 
 </resources>
