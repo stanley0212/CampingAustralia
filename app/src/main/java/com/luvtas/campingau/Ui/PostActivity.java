@@ -59,6 +59,7 @@ import com.r0adkll.slidr.model.SlidrInterface;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -85,6 +86,7 @@ public class PostActivity extends AppCompatActivity {
     AppCompatRadioButton type1, type2, type3;
     String type,newtype;
     static List<Uri> imageListUri = new ArrayList<>(10);
+    String[] imagesArrayUri;
     MediaController mediaController;
     RecyclerView recyclerView;
     VideoView videoView;
@@ -194,6 +196,7 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(image_check.equals("ok")){
+                    imagesArrayUri = new String[imageListUri.size()];
                     uploadImage(0);
                 } else {
                     UploadVideo();
@@ -372,33 +375,34 @@ public class PostActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Object downloadUri = task.getResult();
                         myUrl = downloadUri.toString();
-
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
-                        String postid = reference.push().getKey();
-
-                        if(type1.equals("Camping")){
-                            newtype = "Camping";
-                        } else {
-                            newtype = type;
-                        }
-
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("postid", postid);
-                        hashMap.put("sub", spinner.getSelectedItem().toString());
-                        hashMap.put("postimage", myUrl);
-                        hashMap.put("description", post_description.getText().toString());
-                        hashMap.put("title", "");
-                        hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        hashMap.put("time", ServerValue.TIMESTAMP);
-                        hashMap.put("username", currentname);
-                        hashMap.put("profile_image", currentProfileImage);
-                        hashMap.put("blue_check", blue_check);
-                        hashMap.put("imageType","image");
-                        hashMap.put("type",newtype);
-
-                        reference.child(postid).setValue(hashMap);
+                        imagesArrayUri[index] = myUrl;
                         progressDialog.dismiss();
                         if (index == imageListUri.size() - 1) {
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
+                            String postid = reference.push().getKey();
+
+                            if(type1.equals("Camping")){
+                                newtype = "Camping";
+                            } else {
+                                newtype = type;
+                            }
+
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("postid", postid);
+                            hashMap.put("sub", spinner.getSelectedItem().toString());
+                            hashMap.put("postimage", imagesArrayUri[0]);
+                            hashMap.put("postImages", Arrays.asList(imagesArrayUri));
+                            hashMap.put("description", post_description.getText().toString());
+                            hashMap.put("title", "");
+                            hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            hashMap.put("time", ServerValue.TIMESTAMP);
+                            hashMap.put("username", currentname);
+                            hashMap.put("profile_image", currentProfileImage);
+                            hashMap.put("blue_check", blue_check);
+                            hashMap.put("imageType","image");
+                            hashMap.put("type",newtype);
+
+                            reference.child(postid).setValue(hashMap);
                             imageListUri.clear();
                             startActivity(new Intent(PostActivity.this, MainActivity.class));
                             finish();
@@ -467,8 +471,6 @@ public class PostActivity extends AppCompatActivity {
     }
 
     static class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
-
-
         /**
          * Provide a reference to the type of views that you are using
          * (custom ViewHolder).

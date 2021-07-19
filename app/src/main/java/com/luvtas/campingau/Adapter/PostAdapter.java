@@ -133,11 +133,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         nrLikes(holder.likes, postModel.getPostid());
         getComments(postModel.getPostid(), holder.comments);
         isSaved(postModel.getPostid(), holder.save);
-//        if(postModel.getBlue_check().equals("1")){
-//            holder.blue_check.setVisibility(View.VISIBLE);
-//        } else {
-//            holder.blue_check.setVisibility(View.GONE);
-//        }
+        if(postModel.getBlue_check().equals("1")){
+            holder.blue_check.setVisibility(View.VISIBLE);
+        } else {
+            holder.blue_check.setVisibility(View.GONE);
+        }
 
         holder.image_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,10 +217,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 //                editor.putString("postid", postModel.getPostid());
 //                editor.apply();
 //                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PostDetailFragment()).commit();
-                OpenImage = (ImageView) view.findViewById(R.id.post_pic);
                 ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) view.getContext(), view, "sharedView");
                 Intent intent = new Intent(mContext, OpenImageActivity.class);
                 intent.putExtra("shareimage", postModel.getPostimage());
+                intent.putExtra("shareImages", postModel.getPostImages().toArray(new String[0]));
                 intent.putExtra("image_type", postModel.getImageType());
                 mContext.startActivity(intent, activityOptionsCompat.toBundle());
             }
