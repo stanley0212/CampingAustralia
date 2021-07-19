@@ -179,22 +179,22 @@ public class CampSitePostActivity extends AppCompatActivity {
 
         chipGroup = findViewById(R.id.CampSite);
 
-        for (String camp : CampSite)
-        {
-            Chip chip = new Chip(this);
-            chip.setText(camp);
-            //chip.setChipBackgroundColorResource(R.color.colorAccent);
-            chip.setCloseIconVisible(true);
-//            chip.setIconStartPadding(3f);
-//            chip.setPadding(60, 10, 60, 10);
-            chip.setTextColor(getResources().getColor(R.color.black));
-            //chip.setTextAppearance(R.style.ChipTextAppearance);
-            chip.setId(ViewCompat.generateViewId());
-
-            // edit:
-            chip.setCheckable(true);
-            chipGroup.addView(chip);
-        };
+//        for (String camp : CampSite)
+//        {
+//            Chip chip = new Chip(this);
+//            chip.setText(camp);
+//            //chip.setChipBackgroundColorResource(R.color.colorAccent);
+//            chip.setCloseIconVisible(true);
+////            chip.setIconStartPadding(3f);
+////            chip.setPadding(60, 10, 60, 10);
+//            chip.setTextColor(getResources().getColor(R.color.black));
+//            //chip.setTextAppearance(R.style.ChipTextAppearance);
+//            chip.setId(ViewCompat.generateViewId());
+//
+//            // edit:
+//            chip.setCheckable(true);
+//            chipGroup.addView(chip);
+//        };
 
         // OnclickChange item to check
         chipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
