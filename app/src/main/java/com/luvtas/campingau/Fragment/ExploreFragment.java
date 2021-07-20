@@ -38,7 +38,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.luvtas.campingau.Adapter.CamperSiteAdapter;
-import com.luvtas.campingau.Adapter.MultiImageAdapter;
 import com.luvtas.campingau.Model.CamperSiteModel;
 import com.luvtas.campingau.Model.MultiImageModel;
 import com.luvtas.campingau.Model.RatingModel;

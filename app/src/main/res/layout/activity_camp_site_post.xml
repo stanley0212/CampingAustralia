@@ -60,17 +60,9 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <ImageView
-                android:scaleType="centerCrop"
-                android:id="@+id/campsite_image"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:src="@drawable/campsite_default"/>
 
             <ImageView
                 android:id="@+id/upload_banner"
@@ -80,6 +72,18 @@
                 android:src="@drawable/ic_photo_camera_black_24dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"/>
+<!--            <ImageView-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:id="@+id/campsite_image"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="200dp"-->
+<!--                android:src="@drawable/campsite_default"/>-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCampsiteImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/upload_banner" />
 
         </RelativeLayout>
 
@@ -183,6 +187,7 @@
             app:singleSelection="false">
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/kitchen"
@@ -192,6 +197,7 @@
                 android:text="@string/campsite_kitchen"/>
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/barbecue"
@@ -200,6 +206,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_bbq"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/suit_any_car"
@@ -208,6 +215,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_suit_any_car"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/laundromat"
@@ -216,6 +224,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_laundromat"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/dump_station"
@@ -224,6 +233,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_dump_station"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/large_vehicle_access"
@@ -232,6 +242,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_large_vehicle_access"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/caravan_power"
@@ -240,6 +251,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_caravan_power"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/hot_shower"
@@ -248,6 +260,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_hot_shower"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/water_from_tap"
@@ -256,6 +269,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_water_from_tap"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/cellular_signal"
@@ -264,6 +278,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_cellular_signal"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/cabin"
@@ -272,6 +287,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_cabin"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/wifi"
@@ -280,6 +296,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_wifi"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/wheelchair_accessible"
@@ -288,6 +305,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_wheelchair"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/pet_welcome"
@@ -296,6 +314,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_pet_welcome"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/househole_power"
@@ -304,6 +323,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_household_power"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/surface"
@@ -312,6 +332,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_surface"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip17"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/credit_card"
@@ -320,6 +341,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_credit_card"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/bed_supplied"
@@ -328,6 +350,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_bed_supplied"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip19"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/toilet"
@@ -336,6 +359,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_toilet"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip20"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/internet"
@@ -344,6 +368,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:text="@string/campsite_internet"/>
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip21"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:chipIcon="@drawable/swimming_pool"

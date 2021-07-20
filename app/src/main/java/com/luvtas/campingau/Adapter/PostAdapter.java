@@ -574,7 +574,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
     }
 
-    public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
+    public static class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
         List<String> imagesUrl;
 
         public ImageAdapter(List<String> imagesUrl) {
@@ -584,7 +584,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
          * Provide a reference to the type of views that you are using
          * (custom ViewHolder).
          */
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public static class ViewHolder extends RecyclerView.ViewHolder {
             private final ImageView imageView;
 
             public ViewHolder(View view) {

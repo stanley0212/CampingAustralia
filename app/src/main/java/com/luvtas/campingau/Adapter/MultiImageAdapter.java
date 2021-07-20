@@ -36,7 +36,7 @@ public class MultiImageAdapter extends RecyclerView.Adapter<MultiImageAdapter.My
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Glide.with(context).load(camperSiteModels.get(position).getCamperSiteImage()).into(holder.campsite_image);
+//        Glide.with(context).load(camperSiteModels.get(position).getCamperSiteImage()).into(holder.campsite_image);
 
     }
 
