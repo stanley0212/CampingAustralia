@@ -85,7 +85,6 @@ public class PostActivity extends AppCompatActivity {
     private SlidrInterface slidrInterface;
     AppCompatRadioButton type1, type2, type3;
     String type,newtype;
-    static List<Uri> imageListUri = new ArrayList<>(10);
     String[] imagesArrayUri;
     MediaController mediaController;
     RecyclerView recyclerView;
@@ -93,6 +92,8 @@ public class PostActivity extends AppCompatActivity {
     private static final int PICK_VIDEO = 1;
     ProgressBar progressBar;
 
+    static List<Uri> imageListUri;
+    int maxSelectedPics = 9;
 
 
     public PostActivity() {
@@ -208,11 +209,15 @@ public class PostActivity extends AppCompatActivity {
         image_added.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                image_check = "ok";
-                video_check="0";
-                CropImage.activity()
-                        .setAspectRatio(1,1)
-                        .start(PostActivity.this);
+                if (imageListUri.size() < maxSelectedPics) {
+                    image_check = "ok";
+                    video_check = "0";
+                    CropImage.activity()
+                            .setAspectRatio(1, 1)
+                            .start(PostActivity.this);
+                } else {
+                    //TODO: Add toast
+                }
             }
         });
 
@@ -228,7 +233,8 @@ public class PostActivity extends AppCompatActivity {
         slidrInterface = Slidr.attach(this);  // 向右滑動 關閉 Activity
 
         recyclerView.setAdapter(new CustomAdapter());
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 9));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, maxSelectedPics));
+        imageListUri = new ArrayList<>(maxSelectedPics);
     }
 
     private String getExt(Uri uri){
