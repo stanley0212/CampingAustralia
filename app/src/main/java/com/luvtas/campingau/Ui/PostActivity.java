@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -54,10 +55,12 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.luvtas.campingau.Model.UserModel;
 import com.luvtas.campingau.R;
+import com.luvtas.campingau.Util.RealPathUtil;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrInterface;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -70,7 +73,7 @@ public class PostActivity extends AppCompatActivity {
     private StorageReference storageReference, storageReference_video;
     private DatabaseReference databaseReference_video;
 
-    private ImageView  image_added, profile_image,image_show,video_added;
+    private ImageView  image_added, profile_image,image_show,video_added, image_added_multi;
     private String image_check,blue_check,video_check;
     private TextView post, cancel, username;
     private EditText post_title, post_description;
@@ -94,6 +97,7 @@ public class PostActivity extends AppCompatActivity {
 
     static List<Uri> imageListUri;
     int maxSelectedPics = 9;
+    int PICK_MULTI_IMAGE_REQUEST = 999;
 
 
     public PostActivity() {
@@ -106,6 +110,7 @@ public class PostActivity extends AppCompatActivity {
 
         cancel = findViewById(R.id.cancel);
         image_added = findViewById(R.id.image_added);
+        image_added_multi = findViewById(R.id.image_added_multi);
 //        image_show = findViewById(R.id.image_show);
         post = findViewById(R.id.post);
         //post_title = findViewById(R.id.post_title);
@@ -215,6 +220,23 @@ public class PostActivity extends AppCompatActivity {
                     CropImage.activity()
                             .setAspectRatio(1, 1)
                             .start(PostActivity.this);
+                } else {
+                    //TODO: Add toast
+                }
+            }
+        });
+
+        image_added_multi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageListUri.size() < maxSelectedPics) {
+                    image_check = "ok";
+                    video_check = "0";
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent,"Select images"), PICK_MULTI_IMAGE_REQUEST);
                 } else {
                     //TODO: Add toast
                 }
@@ -451,10 +473,22 @@ public class PostActivity extends AppCompatActivity {
                         recyclerView.getAdapter().notifyDataSetChanged();
                     }
                 }
-            } else {
-                //Toast.makeText(this, getApplicationContext().getResources().getString(R.string.something_gone_wrong), Toast.LENGTH_SHORT).show();
-//            startActivity(new Intent(PostActivity.this, MainActivity.class));
-//            finish();
+            } else if (requestCode == PICK_MULTI_IMAGE_REQUEST && resultCode == RESULT_OK) {
+                if(data != null) {
+                    if(data.getClipData() != null) {
+                        int count = data.getClipData().getItemCount();
+                        for (int i = 0; i < count; i++) {
+                            if (imageListUri.size() < maxSelectedPics)
+                                imageListUri.add(data.getClipData().getItemAt(i).getUri());
+                        }
+                    } else if (data.getData() != null) {
+                        imageListUri.add(Uri.fromFile(new File(new RealPathUtil().getRealPathFromURI(this, data.getData()))));
+                        //TODO: do something
+                    }
+                }
+                if (recyclerView.getAdapter() != null)
+                    recyclerView.getAdapter().notifyDataSetChanged();
+
             }
         } else {
             if (requestCode == PICK_VIDEO){

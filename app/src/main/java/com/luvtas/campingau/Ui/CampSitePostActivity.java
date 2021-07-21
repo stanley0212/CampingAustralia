@@ -67,6 +67,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.luvtas.campingau.Model.UserModel;
 import com.luvtas.campingau.R;
+import com.luvtas.campingau.Util.RealPathUtil;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.ByteArrayOutputStream;
@@ -328,7 +329,7 @@ public class CampSitePostActivity extends AppCompatActivity {
                         imageListUriLocal.add(data.getClipData().getItemAt(i).getUri());
                     }
                 } else if (data.getData() != null) {
-                    imageListUriLocal.add(Uri.fromFile(new File(getRealPathFromURI(this, data.getData()))));
+                    imageListUriLocal.add(Uri.fromFile(new File(new RealPathUtil().getRealPathFromURI(this, data.getData()))));
                     //TODO: do something
                 }
             }
@@ -522,48 +523,5 @@ public class CampSitePostActivity extends AppCompatActivity {
         }
 
         return camperSiteSummary;
-    }
-
-    public String getRealPathFromURI(Context context, Uri contentUri) {
-        OutputStream out;
-        File file = new File(getFilename(context));
-
-        try {
-            if (file.createNewFile()) {
-                InputStream iStream = context.getContentResolver().openInputStream(contentUri);
-                byte[] inputData = getBytes(iStream);
-                out = new FileOutputStream(file);
-                out.write(inputData);
-                out.close();
-                return file.getAbsolutePath();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private byte[] getBytes(InputStream inputStream) throws IOException {
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-
-        int len = 0;
-        while ((len = inputStream.read(buffer)) != -1) {
-            byteBuffer.write(buffer, 0, len);
-        }
-        return byteBuffer.toByteArray();
-    }
-
-    private String getFilename(Context context) {
-        File mediaStorageDir = new File(context.getExternalFilesDir(""), "patient_data");
-        // Create the storage directory if it does not exist
-        if (!mediaStorageDir.exists()) {
-            mediaStorageDir.mkdirs();
-        }
-
-        String mImageName = "IMG_" + String.valueOf(System.currentTimeMillis()) + ".png";
-        return mediaStorageDir.getAbsolutePath() + "/" + mImageName;
-
     }
 }
