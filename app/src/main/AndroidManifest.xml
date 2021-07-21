@@ -20,7 +20,8 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:requestLegacyExternalStorage="true">
         <activity android:name=".Ui.ChatMessageActivity"></activity>
         <activity android:name=".Ui.FollowersActivity" />
         <activity android:name=".Ui.EditProfileActivity" />

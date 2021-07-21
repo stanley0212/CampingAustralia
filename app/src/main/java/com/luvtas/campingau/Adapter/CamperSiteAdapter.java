@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.luvtas.campingau.Fragment.ProfileFragment;
 import com.luvtas.campingau.Model.CamperSiteModel;
 import com.luvtas.campingau.R;
+import com.luvtas.campingau.Util.CirclePagerIndicatorDecoration;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -70,6 +71,7 @@ public class CamperSiteAdapter extends RecyclerView.Adapter<CamperSiteAdapter.Vi
 
         viewHolder.recyclerViewInner.setAdapter(new PostAdapter.ImageAdapter(camperSiteModel.getCamperSiteImages()));
         viewHolder.recyclerViewInner.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+        viewHolder.recyclerViewInner.addItemDecoration(new CirclePagerIndicatorDecoration());
         SnapHelper snapHelper = new PagerSnapHelper();
         if (viewHolder.recyclerViewInner.getOnFlingListener() == null)
             snapHelper.attachToRecyclerView(viewHolder.recyclerViewInner);

@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -68,7 +69,12 @@ import com.luvtas.campingau.Model.UserModel;
 import com.luvtas.campingau.R;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -315,16 +321,16 @@ public class CampSitePostActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == PICK_MULTI_IMAGE_REQUEST) {
-            if(resultCode == Activity.RESULT_OK) {
+            if(resultCode == Activity.RESULT_OK && data != null) {
                 if(data.getClipData() != null) {
                     int count = data.getClipData().getItemCount();
-
-                    for(int i = 0; i < count; i++)
+                    for (int i = 0; i < count; i++) {
                         imageListUriLocal.add(data.getClipData().getItemAt(i).getUri());
+                    }
+                } else if (data.getData() != null) {
+                    imageListUriLocal.add(Uri.fromFile(new File(getRealPathFromURI(this, data.getData()))));
+                    //TODO: do something
                 }
-            } else if(data.getData() != null) {
-                imageListUriLocal.add(Uri.fromFile(new File(data.getData().getPath())));
-                //TODO: do something
             }
             if (recyclerView.getAdapter() != null)
                 recyclerView.getAdapter().notifyDataSetChanged();
@@ -516,5 +522,48 @@ public class CampSitePostActivity extends AppCompatActivity {
         }
 
         return camperSiteSummary;
+    }
+
+    public String getRealPathFromURI(Context context, Uri contentUri) {
+        OutputStream out;
+        File file = new File(getFilename(context));
+
+        try {
+            if (file.createNewFile()) {
+                InputStream iStream = context.getContentResolver().openInputStream(contentUri);
+                byte[] inputData = getBytes(iStream);
+                out = new FileOutputStream(file);
+                out.write(inputData);
+                out.close();
+                return file.getAbsolutePath();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+
+    private String getFilename(Context context) {
+        File mediaStorageDir = new File(context.getExternalFilesDir(""), "patient_data");
+        // Create the storage directory if it does not exist
+        if (!mediaStorageDir.exists()) {
+            mediaStorageDir.mkdirs();
+        }
+
+        String mImageName = "IMG_" + String.valueOf(System.currentTimeMillis()) + ".png";
+        return mediaStorageDir.getAbsolutePath() + "/" + mImageName;
+
     }
 }

@@ -62,6 +62,7 @@ import com.luvtas.campingau.R;
 import com.luvtas.campingau.Ui.CommentsActivity;
 import com.luvtas.campingau.Ui.OpenImageActivity;
 import com.luvtas.campingau.Ui.PostActivity;
+import com.luvtas.campingau.Util.CirclePagerIndicatorDecoration;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -179,6 +180,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.recyclerView.setVisibility(View.VISIBLE);
             holder.recyclerView.setAdapter(new ImageAdapter(postModel.getPostImages()));
             holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+            holder.recyclerView.addItemDecoration(new CirclePagerIndicatorDecoration());
             SnapHelper snapHelper = new PagerSnapHelper();
             if (holder.recyclerView.getOnFlingListener() == null)
                 snapHelper.attachToRecyclerView(holder.recyclerView);
