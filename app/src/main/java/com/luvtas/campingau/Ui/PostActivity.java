@@ -15,11 +15,13 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,10 +63,13 @@ import com.r0adkll.slidr.model.SlidrInterface;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.luvtas.campingau.Util.RealPathUtil.getDownsizedImageBytes;
 
 public class PostActivity extends AppCompatActivity {
     private Uri videoUri;
@@ -392,8 +397,19 @@ public class PostActivity extends AppCompatActivity {
             if (imageUri != null) {
                 final StorageReference filerefrence = storageReference.child(System.currentTimeMillis()
                         + "." + getFileExtension(imageUri));
+                // scaling the image
+                int scaleDivider = 2;
+                try {
+                    Bitmap fullBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    int scaleWidth = fullBitmap.getWidth() / scaleDivider;
+                    int scaleHeight = fullBitmap.getHeight() / scaleDivider;
+                    byte[] downsizedImageBytes =
+                            getDownsizedImageBytes(fullBitmap, scaleWidth, scaleHeight);
 
-                uploadTask = filerefrence.putFile(imageUri);
+                    uploadTask = filerefrence.putBytes(downsizedImageBytes);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 uploadTask.continueWithTask(task -> {
                     if (!task.isSuccessful()) {
                         throw task.getException();

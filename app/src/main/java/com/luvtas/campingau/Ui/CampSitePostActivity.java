@@ -18,10 +18,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,6 +82,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.luvtas.campingau.Util.RealPathUtil.getDownsizedImageBytes;
 
 public class CampSitePostActivity extends AppCompatActivity {
     private ImageView upload_banner, campsite_image, campsite_post, back;
@@ -359,8 +363,19 @@ public class CampSitePostActivity extends AppCompatActivity {
             if (imageUri != null) {
                 final StorageReference filerefrence = storageReference.child(System.currentTimeMillis()
                         + "." + getFileExtension(imageUri));
+                // scaling the image
+                int scaleDivider = 2;
+                try {
+                    Bitmap fullBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    int scaleWidth = fullBitmap.getWidth() / scaleDivider;
+                    int scaleHeight = fullBitmap.getHeight() / scaleDivider;
+                    byte[] downsizedImageBytes =
+                            getDownsizedImageBytes(fullBitmap, scaleWidth, scaleHeight);
 
-                uploadTask = filerefrence.putFile(imageUri);
+                    uploadTask = filerefrence.putBytes(downsizedImageBytes);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 uploadTask.continueWithTask(new Continuation() {
                     @Override
                     public Object then(@NonNull Task task) throws Exception {

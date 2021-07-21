@@ -1,6 +1,7 @@
 package com.luvtas.campingau.Util;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 
 import java.io.ByteArrayOutputStream;
@@ -52,5 +53,16 @@ public class RealPathUtil {
         String mImageName = "IMG_" + String.valueOf(System.currentTimeMillis()) + ".png";
         return mediaStorageDir.getAbsolutePath() + "/" + mImageName;
 
+    }
+
+    static public byte[] getDownsizedImageBytes(Bitmap fullBitmap, int scaleWidth, int scaleHeight) throws IOException {
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(fullBitmap, scaleWidth, scaleHeight, true);
+
+        // 2. Instantiate the downsized image content as a byte[]
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 75, baos);
+
+        return baos.toByteArray();
     }
 }
