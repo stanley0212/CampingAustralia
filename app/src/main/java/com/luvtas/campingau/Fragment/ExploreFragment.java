@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -38,7 +39,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.luvtas.campingau.Adapter.CamperSiteAdapter;
-import com.luvtas.campingau.Adapter.MultiImageAdapter;
 import com.luvtas.campingau.Model.CamperSiteModel;
 import com.luvtas.campingau.Model.MultiImageModel;
 import com.luvtas.campingau.Model.RatingModel;
@@ -157,7 +157,11 @@ public class ExploreFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_view_campsite);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
         seatch_bar = view.findViewById(R.id.search_info);
         camperSiteModel = new ArrayList<>();
         camperSiteAdapter = new CamperSiteAdapter(getContext(),camperSiteModel);

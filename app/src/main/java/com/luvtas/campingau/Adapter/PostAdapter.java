@@ -34,7 +34,11 @@ import android.widget.VideoView;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,6 +61,8 @@ import com.luvtas.campingau.Model.UserModel;
 import com.luvtas.campingau.R;
 import com.luvtas.campingau.Ui.CommentsActivity;
 import com.luvtas.campingau.Ui.OpenImageActivity;
+import com.luvtas.campingau.Ui.PostActivity;
+import com.luvtas.campingau.Util.CirclePagerIndicatorDecoration;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -87,6 +93,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.campsite_status, parent, false);
+
         return new PostAdapter.ViewHolder(view);
     }
 
@@ -109,7 +116,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
-        final PostModel postModel = mPost.get(position);
+        PostModel postModel = mPost.get(position);
 
         publisher = postModel.getPublisher();
         if(postModel.getDescription().equals("")){
@@ -124,7 +131,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
         getUserInfo(holder.image_profile,holder.username,postModel.getPublisher());
 
-        Glide.with(mContext).load(postModel.getPostimage()).into(holder.post_image);
+//        Glide.with(mContext).load(postModel.getPostimage()).into(holder.post_image);
 
         //Glide.with(mContext).load(postModel.getProfile_image()).into(holder.image_profile);
         holder.time.setText(getTimeDate(postModel.getTime()));
@@ -133,11 +140,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         nrLikes(holder.likes, postModel.getPostid());
         getComments(postModel.getPostid(), holder.comments);
         isSaved(postModel.getPostid(), holder.save);
-//        if(postModel.getBlue_check().equals("1")){
-//            holder.blue_check.setVisibility(View.VISIBLE);
-//        } else {
-//            holder.blue_check.setVisibility(View.GONE);
-//        }
+        if(postModel.getBlue_check().equals("1")){
+            holder.blue_check.setVisibility(View.VISIBLE);
+        } else {
+            holder.blue_check.setVisibility(View.GONE);
+        }
 
         holder.image_profile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,13 +176,45 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 //            }
 //        });
 
-        if(postModel.getImageType().equals("video")){
+        if (postModel.getImageType().equals("image")) {
+            holder.recyclerView.setVisibility(View.VISIBLE);
+            holder.recyclerView.setAdapter(new ImageAdapter(postModel.getPostImages()));
+            holder.recyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+            holder.recyclerView.addItemDecoration(new CirclePagerIndicatorDecoration());
+            SnapHelper snapHelper = new PagerSnapHelper();
+            if (holder.recyclerView.getOnFlingListener() == null)
+                snapHelper.attachToRecyclerView(holder.recyclerView);
+//            recyclerView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+////                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
+////                editor.putString("postid", postModel.getPostid());
+////                editor.apply();
+////                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PostDetailFragment()).commit();
+//                    ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) view.getContext(), view, "sharedView");
+//                    Intent intent = new Intent(mContext, OpenImageActivity.class);
+//                    intent.putExtra("shareimage", postModel.getPostimage());
+//                    intent.putExtra("shareImages", postModel.getPostImages().toArray(new String[0]));
+//                    intent.putExtra("image_type", postModel.getImageType());
+//                    mContext.startActivity(intent, activityOptionsCompat.toBundle());
+//                }
+//            });
+            holder.R_layout_image.setVisibility(View.VISIBLE);
+            holder.R_layout_video.setVisibility(View.GONE);
+            holder.videoView.setVisibility(View.GONE);
+            holder.previewImageView.setVisibility(View.GONE);
+            holder.playButton.setVisibility(View.GONE);
+        } else if (postModel.getImageType().equals("video")) {
+            holder.R_layout_image.setVisibility(View.GONE);
+            holder.recyclerView.setVisibility(View.GONE);
             holder.R_layout_video.setVisibility(View.VISIBLE);
             holder.videoView.setVisibility(View.VISIBLE);
-            holder.post_image.setVisibility(View.GONE);
-            Glide.with(mContext).load(position).into(holder.previewImageView);
+            holder.previewImageView.setVisibility(View.VISIBLE);
+            //Glide.with(mContext).load(postModel.getPostimage()).into(holder.previewImageView);
             try {
-                mediaController = new MediaController(mContext);
+                if (mediaController == null) {
+                    mediaController = new MediaController(mContext);
+                }
                 mediaController.setAnchorView(holder.videoView);
                 Uri video_path = Uri.parse(postModel.getPostimage());
                 holder.videoView.setMediaController(mediaController);
@@ -195,36 +234,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 //                        mContext.startActivity(intent, activityOptionsCompat.toBundle());
                     }
                 });
-                holder.videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        holder.playButton.setVisibility(View.VISIBLE);
-                    }
-                });
+//                holder.videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//                    @Override
+//                    public void onCompletion(MediaPlayer mp) {
+//                        holder.playButton.setVisibility(View.VISIBLE);
+//                    }
+//                });
             } catch (Exception e){
                 Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.something_gone_wrong), Toast.LENGTH_SHORT).show();
             }
-        } else {
-            holder.R_layout_video.setVisibility(View.GONE);
-            holder.videoView.setVisibility(View.GONE);
         }
-
-
-        holder.post_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                SharedPreferences.Editor editor = mContext.getSharedPreferences("PREFS", Context.MODE_PRIVATE).edit();
-//                editor.putString("postid", postModel.getPostid());
-//                editor.apply();
-//                ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new PostDetailFragment()).commit();
-                OpenImage = (ImageView) view.findViewById(R.id.post_pic);
-                ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) view.getContext(), view, "sharedView");
-                Intent intent = new Intent(mContext, OpenImageActivity.class);
-                intent.putExtra("shareimage", postModel.getPostimage());
-                intent.putExtra("image_type", postModel.getImageType());
-                mContext.startActivity(intent, activityOptionsCompat.toBundle());
-            }
-        });
 
         holder.save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -391,11 +410,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView image_profile, post_image, like, comment, save,blue_check, more,previewImageView,playButton;
+        public ImageView image_profile, like, comment, save,blue_check, more,previewImageView,playButton;
         public TextView username, likes, publisher, description, comments,title, time, campsite_kids;
         public VideoView videoView;
         public RelativeLayout R_layout_image, R_layout_video;
-
+        public RecyclerView recyclerView;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -404,7 +423,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             time = itemView.findViewById(R.id.time);
             title = itemView.findViewById(R.id.title);
             image_profile = itemView.findViewById(R.id.image_profile);
-            post_image = itemView.findViewById(R.id.post_image);
+//            post_image = itemView.findViewById(R.id.post_image);
             comments = itemView.findViewById(R.id.comments);
             like = itemView.findViewById(R.id.like);
             comment = itemView.findViewById(R.id.comment);
@@ -420,7 +439,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             R_layout_video = itemView.findViewById(R.id.R_layout_video);
             previewImageView = itemView.findViewById(R.id.previewImageView);
             playButton = itemView.findViewById(R.id.playButton);
-
+            recyclerView = itemView.findViewById(R.id.rvImages);
         }
     }
 
@@ -557,7 +576,54 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
     }
 
+    public static class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
+        List<String> imagesUrl;
 
+        public ImageAdapter(List<String> imagesUrl) {
+            this.imagesUrl = imagesUrl;
+        }
+        /**
+         * Provide a reference to the type of views that you are using
+         * (custom ViewHolder).
+         */
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+            private final ImageView imageView;
+
+            public ViewHolder(View view) {
+                super(view);
+                imageView = view.findViewById(R.id.ivPreview);
+            }
+
+            public ImageView getImageView() {
+                return imageView;
+            }
+        }
+
+        // Create new views (invoked by the layout manager)
+        @Override
+        public ImageAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            // Create a new view, which defines the UI of the list item
+            View view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.image_post_detail_row_item, viewGroup, false);
+
+            return new ViewHolder(view);
+        }
+
+        // Replace the contents of a view (invoked by the layout manager)
+        @Override
+        public void onBindViewHolder(ImageAdapter.ViewHolder viewHolder, final int position) {
+
+            // Get element from your dataset at this position and replace the
+            // contents of the view with that element
+            Glide.with(viewHolder.itemView).load(imagesUrl.get(position)).optionalCenterCrop().into(viewHolder.imageView);
+        }
+
+        // Return the size of your dataset (invoked by the layout manager)
+        @Override
+        public int getItemCount() {
+            return imagesUrl.size();
+        }
+    }
 //    private void publisherinfo(final ImageView image_profile, final TextView username, final TextView publisher, final String userid){
 //        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
 //

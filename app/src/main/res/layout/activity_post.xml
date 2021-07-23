@@ -248,10 +248,18 @@
             android:src="@drawable/ic_insert_photo_black_24dp"/>
 
         <ImageView
+            android:id="@+id/image_added_multi"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/ic_multiple_images"/>
+
+        <ImageView
             android:layout_marginLeft="12dp"
             android:id="@+id/video_added"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_marginStart="20dp"
             android:src="@drawable/ic_video_library_black_24dp"/>
 
 <!--        <ImageView-->

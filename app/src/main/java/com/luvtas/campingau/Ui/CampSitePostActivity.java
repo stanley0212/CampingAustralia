@@ -6,23 +6,34 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -58,17 +69,25 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.luvtas.campingau.Model.UserModel;
 import com.luvtas.campingau.R;
+import com.luvtas.campingau.Util.RealPathUtil;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.luvtas.campingau.Util.RealPathUtil.getDownsizedImageBytes;
+
 public class CampSitePostActivity extends AppCompatActivity {
     private ImageView upload_banner, campsite_image, campsite_post, back;
     private EditText campsite_name, campsite_info, campsite_description;
-    private Uri imageUri;
     private Spinner spinner;
     private String myUrl = "";
     private String image_check;
@@ -92,6 +111,12 @@ public class CampSitePostActivity extends AppCompatActivity {
             Place.Field.ADDRESS,
             Place.Field.LAT_LNG);
 
+    RecyclerView recyclerView;
+    static List<Uri> imageListUriLocal;
+    String[] imagesArrayUri;
+    int maxSelectedPics = 20;
+    int PICK_MULTI_IMAGE_REQUEST = 99;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +133,7 @@ public class CampSitePostActivity extends AppCompatActivity {
         spinner = findViewById(R.id.spinner_sub);
         place_name = findViewById(R.id.place_name);
         place_latlng = findViewById(R.id.place_latlng);
+        recyclerView = findViewById(R.id.rvCampsiteImage);
 
 //        campsite_address.setFocusable(false);
 //        campsite_address.setOnClickListener(new View.OnClickListener() {
@@ -251,14 +277,23 @@ public class CampSitePostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 image_check = "ok";
-                CropImage.activity().setAspectRatio(1,1).start(CampSitePostActivity.this);
+//                CropImage.activity().setAspectRatio(1,1).start(CampSitePostActivity.this);
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent,"Select images"), PICK_MULTI_IMAGE_REQUEST);
             }
         });
 
         campsite_post.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postDetails();
+                if (imageListUriLocal.size() > 0) {
+                    imagesArrayUri = new String[imageListUriLocal.size()];
+                    postDetails(0);
+                }
+
             }
         });
 
@@ -278,22 +313,37 @@ public class CampSitePostActivity extends AppCompatActivity {
 
             }
         });
+
+        recyclerView.setAdapter(new CustomAdapter());
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 5));
+        imageListUriLocal = new ArrayList<>(maxSelectedPics);
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            imageUri = result.getUri();
-            campsite_image.setImageURI(imageUri);
-        } else {
-            //Toast.makeText(this, getApplicationContext().getResources().getString(R.string.something_gone_wrong), Toast.LENGTH_SHORT).show();
+
+        if(requestCode == PICK_MULTI_IMAGE_REQUEST) {
+            if(resultCode == Activity.RESULT_OK && data != null) {
+                if(data.getClipData() != null) {
+                    int count = data.getClipData().getItemCount();
+                    for (int i = 0; i < count; i++) {
+                        imageListUriLocal.add(data.getClipData().getItemAt(i).getUri());
+                    }
+                } else if (data.getData() != null) {
+                    imageListUriLocal.add(Uri.fromFile(new File(new RealPathUtil().getRealPathFromURI(this, data.getData()))));
+                    //TODO: do something
+                }
+            }
+            if (recyclerView.getAdapter() != null)
+                recyclerView.getAdapter().notifyDataSetChanged();
         }
     }
 
-    private void postDetails() {
+    private void postDetails(int index) {
+        Uri imageUri = imageListUriLocal.get(index);
         if(spinner.getSelectedItem().toString().equals(getApplicationContext().getResources().getString(R.string.choose_sub))) {
             AlertDialog alertDialog = new AlertDialog.Builder(this)
                     .setTitle(getApplicationContext().getResources().getString(R.string.alert_error))
@@ -305,7 +355,7 @@ public class CampSitePostActivity extends AppCompatActivity {
                         }
                     }).create();
             alertDialog.show();
-        } else if(image_check == "ok") {
+        } else if(image_check.equals("ok")) {
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("Posting...");
             progressDialog.show();
@@ -313,8 +363,19 @@ public class CampSitePostActivity extends AppCompatActivity {
             if (imageUri != null) {
                 final StorageReference filerefrence = storageReference.child(System.currentTimeMillis()
                         + "." + getFileExtension(imageUri));
+                // scaling the image
+                int scaleDivider = 1;
+                try {
+                    Bitmap fullBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    int scaleWidth = fullBitmap.getWidth() / scaleDivider;
+                    int scaleHeight = fullBitmap.getHeight() / scaleDivider;
+                    byte[] downsizedImageBytes =
+                            getDownsizedImageBytes(fullBitmap, scaleWidth, scaleHeight);
 
-                uploadTask = filerefrence.putFile(imageUri);
+                    uploadTask = filerefrence.putBytes(downsizedImageBytes);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 uploadTask.continueWithTask(new Continuation() {
                     @Override
                     public Object then(@NonNull Task task) throws Exception {
@@ -329,30 +390,37 @@ public class CampSitePostActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Object downloadUri = task.getResult();
                             myUrl = downloadUri.toString();
-
-                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Campsite");
-                            String postid = reference.push().getKey();
-
-                            HashMap<String, Object> hashMap = new HashMap<>();
-                            hashMap.put("CamperSiteID", postid);
-                            hashMap.put("CamperSiteSub", spinner.getSelectedItem().toString());
-                            hashMap.put("CamperSiteImage", myUrl);
-                            hashMap.put("CamperSiteDescription", campsite_description.getText().toString());
-                            hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                            hashMap.put("username", currentname);
-                            hashMap.put("CamperSiteAddress", campsite_address.getText().toString());
-                            hashMap.put("CamperSiteInfo", campsite_info.getText().toString());
-                            hashMap.put("CamperSiteName",campsite_name.getText().toString());
-                            hashMap.put("ServerTimeStamp", ServerValue.TIMESTAMP);
-                            hashMap.put("CamperSiteSummary", chipGroup.getCheckedChipId());
-                            hashMap.put("CamperSiteLatLng", place_latlng.getText().toString());
-                            hashMap.put("CamperSiteLongitude", placeSelected.getLatLng().longitude);
-                            hashMap.put("CamperSiteLatitude", placeSelected.getLatLng().latitude);
-
-                            reference.child(postid).setValue(hashMap);
+                            imagesArrayUri[index] = myUrl;
                             progressDialog.dismiss();
-                            startActivity(new Intent(CampSitePostActivity.this, MainActivity.class));
-                            finish();
+                            if (index == imageListUriLocal.size() - 1) {
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Campsite");
+                                String postid = reference.push().getKey();
+
+                                HashMap<String, Object> hashMap = new HashMap<>();
+                                hashMap.put("CamperSiteID", postid);
+                                hashMap.put("CamperSiteSub", spinner.getSelectedItem().toString());
+                                hashMap.put("CamperSiteImages", Arrays.asList(imagesArrayUri));
+                                hashMap.put("CamperSiteDescription", campsite_description.getText().toString());
+                                hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                hashMap.put("username", currentname);
+                                hashMap.put("CamperSiteAddress", campsite_address.getText().toString());
+                                hashMap.put("CamperSiteInfo", campsite_info.getText().toString());
+                                hashMap.put("CamperSiteName",campsite_name.getText().toString());
+                                hashMap.put("ServerTimeStamp", ServerValue.TIMESTAMP);
+                                hashMap.put("CamperSiteSummary", getChipList());
+                                hashMap.put("CamperSiteLatLng", place_latlng.getText().toString());
+                                if (placeSelected != null) {
+                                    hashMap.put("CamperSiteLongitude", placeSelected.getLatLng().longitude);
+                                    hashMap.put("CamperSiteLatitude", placeSelected.getLatLng().latitude);
+                                }
+
+                                reference.child(postid).setValue(hashMap);
+                                imageListUriLocal.clear();
+                                startActivity(new Intent(CampSitePostActivity.this, MainActivity.class));
+                                finish();
+                            } else {
+                                postDetails(index + 1);
+                            }
                         } else {
                             Toast.makeText(CampSitePostActivity.this, getApplicationContext().getResources().getString(R.string.failed), Toast.LENGTH_SHORT).show();
                         }
@@ -382,5 +450,93 @@ public class CampSitePostActivity extends AppCompatActivity {
         ContentResolver contentResolver = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(contentResolver.getType(uri));
+    }
+
+    static class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+        /**
+         * Provide a reference to the type of views that you are using
+         * (custom ViewHolder).
+         */
+        static class ViewHolder extends RecyclerView.ViewHolder {
+            private final ImageView imageView;
+
+            public ViewHolder(View view) {
+                super(view);
+                imageView = view.findViewById(R.id.ivPreview);
+            }
+
+            public ImageView getImageView() {
+                return imageView;
+            }
+        }
+
+        // Create new views (invoked by the layout manager)
+        @Override
+        public CustomAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+            // Create a new view, which defines the UI of the list item
+            View view = LayoutInflater.from(viewGroup.getContext())
+                    .inflate(R.layout.image_row_item_campsite, viewGroup, false);
+
+            int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+            RecyclerView.LayoutParams layoutParams = (RecyclerView.LayoutParams) view.getLayoutParams();
+            layoutParams.width = screenWidth / 5;
+            layoutParams.height = screenWidth / 5;
+            view.setLayoutParams(layoutParams);
+
+            return new CustomAdapter.ViewHolder(view);
+        }
+
+        // Replace the contents of a view (invoked by the layout manager)
+        @Override
+        public void onBindViewHolder(CustomAdapter.ViewHolder viewHolder, final int position) {
+
+            // Get element from your dataset at this position and replace the
+            // contents of the view with that element
+            Glide.with(viewHolder.itemView).load(imageListUriLocal.get(position)).optionalCenterCrop().into(viewHolder.imageView);
+            viewHolder.itemView.findViewById(R.id.ivDelete).setOnClickListener(v -> {
+                imageListUriLocal.remove(position);
+                notifyDataSetChanged();
+            });
+        }
+
+        // Return the size of your dataset (invoked by the layout manager)
+        @Override
+        public int getItemCount() {
+            return imageListUriLocal.size();
+        }
+    }
+
+    public List<Integer> getChipList() {
+        HashMap<Integer, Integer> campSiteMap = new HashMap<>();
+        List<Integer> camperSiteSummary = new ArrayList<>();
+
+        campSiteMap.put(R.id.chip1, 1);
+        campSiteMap.put(R.id.chip2, 2);
+        campSiteMap.put(R.id.chip3, 3);
+        campSiteMap.put(R.id.chip4, 4);
+        campSiteMap.put(R.id.chip5, 5);
+        campSiteMap.put(R.id.chip6, 6);
+        campSiteMap.put(R.id.chip7, 7);
+        campSiteMap.put(R.id.chip8, 8);
+        campSiteMap.put(R.id.chip9, 9);
+        campSiteMap.put(R.id.chip10, 10);
+        campSiteMap.put(R.id.chip11, 11);
+        campSiteMap.put(R.id.chip12, 12);
+        campSiteMap.put(R.id.chip13, 13);
+        campSiteMap.put(R.id.chip14, 14);
+        campSiteMap.put(R.id.chip15, 15);
+        campSiteMap.put(R.id.chip16, 16);
+        campSiteMap.put(R.id.chip17, 17);
+        campSiteMap.put(R.id.chip18, 18);
+        campSiteMap.put(R.id.chip19, 19);
+        campSiteMap.put(R.id.chip20, 20);
+        campSiteMap.put(R.id.chip21, 21);
+
+        List<Integer> ids = chipGroup.getCheckedChipIds();
+        for (Integer id : ids){
+            camperSiteSummary.add(campSiteMap.get(id));
+        }
+
+        return camperSiteSummary;
     }
 }

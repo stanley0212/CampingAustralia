@@ -1,8 +1,11 @@
 package com.luvtas.campingau.Model;
 
+import java.util.List;
+
 public class PostModel {
     private String postid;
     private String postimage;
+    private List<String> postImages;
     private String description;
     private String publisher;
     private String sub;
@@ -17,9 +20,10 @@ public class PostModel {
     public PostModel() {
     }
 
-    public PostModel(String postid, String postimage, String description, String publisher, String sub, String title, Long time, String username, String profile_image, String blue_check, String type, String imageType) {
+    public PostModel(String postid, String postimage, List<String> postImages, String description, String publisher, String sub, String title, Long time, String username, String profile_image, String blue_check, String type, String imageType) {
         this.postid = postid;
         this.postimage = postimage;
+        this.postImages = postImages;
         this.description = description;
         this.publisher = publisher;
         this.sub = sub;
@@ -46,6 +50,14 @@ public class PostModel {
 
     public void setPostimage(String postimage) {
         this.postimage = postimage;
+    }
+
+    public List<String> getPostImages() {
+        return postImages;
+    }
+
+    public void setPostImages(List<String> postImages) {
+        this.postImages = postImages;
     }
 
     public String getDescription() {

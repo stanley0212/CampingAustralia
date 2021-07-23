@@ -8,17 +8,20 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,13 +57,19 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.luvtas.campingau.Model.UserModel;
 import com.luvtas.campingau.R;
+import com.luvtas.campingau.Util.RealPathUtil;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrInterface;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.luvtas.campingau.Util.RealPathUtil.getDownsizedImageBytes;
 
 public class PostActivity extends AppCompatActivity {
     private Uri videoUri;
@@ -69,7 +78,7 @@ public class PostActivity extends AppCompatActivity {
     private StorageReference storageReference, storageReference_video;
     private DatabaseReference databaseReference_video;
 
-    private ImageView  image_added, profile_image,image_show,video_added;
+    private ImageView  image_added, profile_image,image_show,video_added, image_added_multi;
     private String image_check,blue_check,video_check;
     private TextView post, cancel, username;
     private EditText post_title, post_description;
@@ -84,13 +93,16 @@ public class PostActivity extends AppCompatActivity {
     private SlidrInterface slidrInterface;
     AppCompatRadioButton type1, type2, type3;
     String type,newtype;
-    static List<Uri> imageListUri = new ArrayList<>(10);
+    String[] imagesArrayUri;
     MediaController mediaController;
     RecyclerView recyclerView;
     VideoView videoView;
     private static final int PICK_VIDEO = 1;
     ProgressBar progressBar;
 
+    static List<Uri> imageListUri;
+    int maxSelectedPics = 9;
+    int PICK_MULTI_IMAGE_REQUEST = 999;
 
 
     public PostActivity() {
@@ -103,6 +115,7 @@ public class PostActivity extends AppCompatActivity {
 
         cancel = findViewById(R.id.cancel);
         image_added = findViewById(R.id.image_added);
+        image_added_multi = findViewById(R.id.image_added_multi);
 //        image_show = findViewById(R.id.image_show);
         post = findViewById(R.id.post);
         //post_title = findViewById(R.id.post_title);
@@ -194,6 +207,7 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(image_check.equals("ok")){
+                    imagesArrayUri = new String[imageListUri.size()];
                     uploadImage(0);
                 } else {
                     UploadVideo();
@@ -205,11 +219,32 @@ public class PostActivity extends AppCompatActivity {
         image_added.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                image_check = "ok";
-                video_check="0";
-                CropImage.activity()
-                        .setAspectRatio(1,1)
-                        .start(PostActivity.this);
+                if (imageListUri.size() < maxSelectedPics) {
+                    image_check = "ok";
+                    video_check = "0";
+                    CropImage.activity()
+                            .setAspectRatio(1, 1)
+                            .start(PostActivity.this);
+                } else {
+                    //TODO: Add toast
+                }
+            }
+        });
+
+        image_added_multi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageListUri.size() < maxSelectedPics) {
+                    image_check = "ok";
+                    video_check = "0";
+                    Intent intent = new Intent();
+                    intent.setType("image/*");
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent,"Select images"), PICK_MULTI_IMAGE_REQUEST);
+                } else {
+                    //TODO: Add toast
+                }
             }
         });
 
@@ -225,7 +260,8 @@ public class PostActivity extends AppCompatActivity {
         slidrInterface = Slidr.attach(this);  // 向右滑動 關閉 Activity
 
         recyclerView.setAdapter(new CustomAdapter());
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 9));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, maxSelectedPics));
+        imageListUri = new ArrayList<>(maxSelectedPics);
     }
 
     private String getExt(Uri uri){
@@ -361,8 +397,19 @@ public class PostActivity extends AppCompatActivity {
             if (imageUri != null) {
                 final StorageReference filerefrence = storageReference.child(System.currentTimeMillis()
                         + "." + getFileExtension(imageUri));
+                // scaling the image
+                int scaleDivider = 1;
+                try {
+                    Bitmap fullBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    int scaleWidth = fullBitmap.getWidth() / scaleDivider;
+                    int scaleHeight = fullBitmap.getHeight() / scaleDivider;
+                    byte[] downsizedImageBytes =
+                            getDownsizedImageBytes(fullBitmap, scaleWidth, scaleHeight);
 
-                uploadTask = filerefrence.putFile(imageUri);
+                    uploadTask = filerefrence.putBytes(downsizedImageBytes);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 uploadTask.continueWithTask(task -> {
                     if (!task.isSuccessful()) {
                         throw task.getException();
@@ -372,33 +419,34 @@ public class PostActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Object downloadUri = task.getResult();
                         myUrl = downloadUri.toString();
-
-                        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
-                        String postid = reference.push().getKey();
-
-                        if(type1.equals("Camping")){
-                            newtype = "Camping";
-                        } else {
-                            newtype = type;
-                        }
-
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("postid", postid);
-                        hashMap.put("sub", spinner.getSelectedItem().toString());
-                        hashMap.put("postimage", myUrl);
-                        hashMap.put("description", post_description.getText().toString());
-                        hashMap.put("title", "");
-                        hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
-                        hashMap.put("time", ServerValue.TIMESTAMP);
-                        hashMap.put("username", currentname);
-                        hashMap.put("profile_image", currentProfileImage);
-                        hashMap.put("blue_check", blue_check);
-                        hashMap.put("imageType","image");
-                        hashMap.put("type",newtype);
-
-                        reference.child(postid).setValue(hashMap);
+                        imagesArrayUri[index] = myUrl;
                         progressDialog.dismiss();
                         if (index == imageListUri.size() - 1) {
+                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Posts");
+                            String postid = reference.push().getKey();
+
+                            if(type1.equals("Camping")){
+                                newtype = "Camping";
+                            } else {
+                                newtype = type;
+                            }
+
+                            HashMap<String, Object> hashMap = new HashMap<>();
+                            hashMap.put("postid", postid);
+                            hashMap.put("sub", spinner.getSelectedItem().toString());
+                            hashMap.put("postimage", imagesArrayUri[0]);
+                            hashMap.put("postImages", Arrays.asList(imagesArrayUri));
+                            hashMap.put("description", post_description.getText().toString());
+                            hashMap.put("title", "");
+                            hashMap.put("publisher", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                            hashMap.put("time", ServerValue.TIMESTAMP);
+                            hashMap.put("username", currentname);
+                            hashMap.put("profile_image", currentProfileImage);
+                            hashMap.put("blue_check", blue_check);
+                            hashMap.put("imageType","image");
+                            hashMap.put("type",newtype);
+
+                            reference.child(postid).setValue(hashMap);
                             imageListUri.clear();
                             startActivity(new Intent(PostActivity.this, MainActivity.class));
                             finish();
@@ -441,10 +489,22 @@ public class PostActivity extends AppCompatActivity {
                         recyclerView.getAdapter().notifyDataSetChanged();
                     }
                 }
-            } else {
-                //Toast.makeText(this, getApplicationContext().getResources().getString(R.string.something_gone_wrong), Toast.LENGTH_SHORT).show();
-//            startActivity(new Intent(PostActivity.this, MainActivity.class));
-//            finish();
+            } else if (requestCode == PICK_MULTI_IMAGE_REQUEST && resultCode == RESULT_OK) {
+                if(data != null) {
+                    if(data.getClipData() != null) {
+                        int count = data.getClipData().getItemCount();
+                        for (int i = 0; i < count; i++) {
+                            if (imageListUri.size() < maxSelectedPics)
+                                imageListUri.add(data.getClipData().getItemAt(i).getUri());
+                        }
+                    } else if (data.getData() != null) {
+                        imageListUri.add(Uri.fromFile(new File(new RealPathUtil().getRealPathFromURI(this, data.getData()))));
+                        //TODO: do something
+                    }
+                }
+                if (recyclerView.getAdapter() != null)
+                    recyclerView.getAdapter().notifyDataSetChanged();
+
             }
         } else {
             if (requestCode == PICK_VIDEO){
@@ -467,8 +527,6 @@ public class PostActivity extends AppCompatActivity {
     }
 
     static class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
-
-
         /**
          * Provide a reference to the type of views that you are using
          * (custom ViewHolder).

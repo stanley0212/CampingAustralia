@@ -1,16 +1,18 @@
 package com.luvtas.campingau.Model;
 
+import java.util.List;
+
 public class CamperSiteModel {
     String CamperSiteID;
     String CamperSiteName;
-    String CamperSiteImage;
+    List<String> CamperSiteImages;
     String CamperSiteType;
     String CamperSiteDistance;
     String CamperSiteInfo;
-    Long CamperSiteSummary;
+    List<Integer> CamperSiteSummary;
     String CamperSiteAddress;
-    String CamperSiteLatitude;
-    String CamperSiteLongitude;
+    Double CamperSiteLatitude;
+    Double CamperSiteLongitude;
     String CamperSiteLatLng;
     String CamperSitePrice1;
     String CamperSitePrice2;
@@ -30,10 +32,10 @@ public class CamperSiteModel {
     public CamperSiteModel() {
     }
 
-    public CamperSiteModel(String camperSiteID, String camperSiteName, String camperSiteImage, String camperSiteType, String camperSiteDistance, String camperSiteInfo, Long camperSiteSummary, String camperSiteAddress, String camperSiteLatitude, String camperSiteLongitude, String camperSitePrice1, String camperSitePrice2, String camperSiteEmail, String camperSiteSub, String camperSiteDescription, Long serverTimeStamp, String camperSiteLatLng) {
+    public CamperSiteModel(String camperSiteID, String camperSiteName, List<String> camperSiteImages, String camperSiteType, String camperSiteDistance, String camperSiteInfo, List<Integer> camperSiteSummary, String camperSiteAddress, Double camperSiteLatitude, Double camperSiteLongitude, String camperSitePrice1, String camperSitePrice2, String camperSiteEmail, String camperSiteSub, String camperSiteDescription, Long serverTimeStamp, String camperSiteLatLng) {
         CamperSiteID = camperSiteID;
         CamperSiteName = camperSiteName;
-        CamperSiteImage = camperSiteImage;
+        CamperSiteImages = camperSiteImages;
         CamperSiteType = camperSiteType;
         CamperSiteDistance = camperSiteDistance;
         CamperSiteInfo = camperSiteInfo;
@@ -74,12 +76,12 @@ public class CamperSiteModel {
         CamperSiteName = camperSiteName;
     }
 
-    public String getCamperSiteImage() {
-        return CamperSiteImage;
+    public List<String> getCamperSiteImages() {
+        return CamperSiteImages;
     }
 
-    public void setCamperSiteImage(String camperSiteImage) {
-        CamperSiteImage = camperSiteImage;
+    public void setCamperSiteImages(List<String> camperSiteImages) {
+        CamperSiteImages = camperSiteImages;
     }
 
     public String getCamperSiteType() {
@@ -106,11 +108,11 @@ public class CamperSiteModel {
         CamperSiteInfo = camperSiteInfo;
     }
 
-    public Long getCamperSiteSummary() {
+    public List<Integer> getCamperSiteSummary() {
         return CamperSiteSummary;
     }
 
-    public void setCamperSiteSummary(Long camperSiteSummary) {
+    public void setCamperSiteSummary(List<Integer> camperSiteSummary) {
         CamperSiteSummary = camperSiteSummary;
     }
 
@@ -122,19 +124,19 @@ public class CamperSiteModel {
         CamperSiteAddress = camperSiteAddress;
     }
 
-    public String getCamperSiteLatitude() {
+    public Double getCamperSiteLatitude() {
         return CamperSiteLatitude;
     }
 
-    public void setCamperSiteLatitude(String camperSiteLatitude) {
+    public void setCamperSiteLatitude(Double camperSiteLatitude) {
         CamperSiteLatitude = camperSiteLatitude;
     }
 
-    public String getCamperSiteLongitude() {
+    public Double getCamperSiteLongitude() {
         return CamperSiteLongitude;
     }
 
-    public void setCamperSiteLongitude(String camperSiteLongitude) {
+    public void setCamperSiteLongitude(Double camperSiteLongitude) {
         CamperSiteLongitude = camperSiteLongitude;
     }
 

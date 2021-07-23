@@ -59,12 +59,17 @@
             android:id="@+id/R_layout_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <ImageView
-                android:scaleType="centerCrop"
+<!--            <ImageView-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="350dp"-->
+<!--                android:id="@+id/post_image"-->
+<!--                android:src="@drawable/default_photo"/>-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvImages"
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
-                android:id="@+id/post_image"
-                android:src="@drawable/default_photo"/>
+                android:layout_height="350dp" />
+
 
             <TextView
                 android:gravity="center"
