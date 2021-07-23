@@ -25,7 +25,6 @@ import com.luvtas.campingau.R;
 import com.r0adkll.slidr.Slidr;
 import com.r0adkll.slidr.model.SlidrInterface;
 
-import org.jetbrains.annotations.NotNull;
 
 public class OpenImageActivity extends AppCompatActivity {
 
@@ -95,7 +94,7 @@ public class OpenImageActivity extends AppCompatActivity {
                 ActivityCompat.finishAfterTransition(OpenImageActivity.this);
             }
         });
-        slidrInterface = Slidr.attach(this);
+        //slidrInterface = Slidr.attach(this);
     }
 
     static class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
@@ -132,7 +131,7 @@ public class OpenImageActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull @NotNull OpenImageActivity.CustomAdapter.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull OpenImageActivity.CustomAdapter.ViewHolder holder, int position) {
             Glide.with(holder.itemView).load(imagesArrayUri[position]).into(holder.imageView);
         }
 

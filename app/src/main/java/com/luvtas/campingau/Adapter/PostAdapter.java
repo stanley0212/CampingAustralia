@@ -206,11 +206,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.playButton.setVisibility(View.GONE);
         } else if (postModel.getImageType().equals("video")) {
             holder.R_layout_image.setVisibility(View.GONE);
+            holder.recyclerView.setVisibility(View.GONE);
             holder.R_layout_video.setVisibility(View.VISIBLE);
             holder.videoView.setVisibility(View.VISIBLE);
             holder.previewImageView.setVisibility(View.VISIBLE);
-            holder.recyclerView.setVisibility(View.GONE);
-            Glide.with(mContext).load(postModel.getPostimage()).into(holder.previewImageView);
+            //Glide.with(mContext).load(postModel.getPostimage()).into(holder.previewImageView);
             try {
                 if (mediaController == null) {
                     mediaController = new MediaController(mContext);

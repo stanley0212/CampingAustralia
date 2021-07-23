@@ -61,7 +61,7 @@ public class RealPathUtil {
 
         // 2. Instantiate the downsized image content as a byte[]
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 75, baos);
+        scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 
         return baos.toByteArray();
     }

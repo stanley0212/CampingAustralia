@@ -398,7 +398,7 @@ public class PostActivity extends AppCompatActivity {
                 final StorageReference filerefrence = storageReference.child(System.currentTimeMillis()
                         + "." + getFileExtension(imageUri));
                 // scaling the image
-                int scaleDivider = 2;
+                int scaleDivider = 1;
                 try {
                     Bitmap fullBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
                     int scaleWidth = fullBitmap.getWidth() / scaleDivider;
