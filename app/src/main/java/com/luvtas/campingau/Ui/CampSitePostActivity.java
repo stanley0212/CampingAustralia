@@ -97,7 +97,7 @@ public class CampSitePostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camp_site_post);
 
-        Places.initialize(getApplicationContext(),"AIzaSyBgwE1bLrIS9RIGJb5ZYetDTwr614aQF90");
+        Places.initialize(getApplicationContext(),"");
 
         campsite_image = findViewById(R.id.campsite_image);
         campsite_name = findViewById(R.id.campsite_name);
